@@ -12,17 +12,10 @@
                     @forelse($mentors as $mentor)
                         <tr>
                             <td> Naam: {{ $mentor->name }} </td>
-                            <td> Geboortejaar: {{ $mentor->email }} </td>
-                            <td> Email: {{ $class->mentor()->name }}</td>
-                            <td> Studenten:
-                                @forelse ($class->students() as $student)
-                                    <br> Naam: {{ $student->name }}
-                                @empty
-                                    <br> Klas heeft (nog) geen studenten
-                                @endforelse
+                            <td> Geboortejaar: {{ $mentor->dob }} </td>
                         </tr>
                     @empty
-                        <p>Geen klassen gevonden.</p>
+                        <p>Geen mentors gevonden.</p>
                     @endforelse
                     </table>
 

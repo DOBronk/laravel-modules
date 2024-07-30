@@ -15,22 +15,22 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    @if (Auth::user()->hasAnyRole('ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN'))
+                    @if (Auth::user()->hasAnyRole(['ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN']))
                         <x-nav-link href="/students">
                             Students
                         </x-nav-link>
                     @endif
-                    @if (Auth::user()->hasAnyRole('ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN'))
+                    @if (Auth::user()->hasAnyRole(['ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN']))
                         <x-nav-link href="/mentors">
                             Mentors
                         </x-nav-link>
                     @endif
-                    @if (Auth::user()->hasAnyRole('ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN'))
+                    @if (Auth::user()->hasAnyRole(['ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN']))
                         <x-nav-link href="/classes">
                             Classes
                         </x-nav-link>
                     @endif
-                    @if (Auth::user()->hasAnyRole('ROLE_MENTOR', 'ROLE_ADMIN'))
+                    @if (Auth::user()->hasAnyRole(['ROLE_MENTOR', 'ROLE_ADMIN']))
                         <x-nav-link href="/parents">
                             Parents
                         </x-nav-link>

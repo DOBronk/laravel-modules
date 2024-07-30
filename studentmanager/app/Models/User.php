@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'dob',
+        'phone',
         'email',
         'password',
     ];
@@ -57,7 +58,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Role')->withTimestamps();
     }
 
-    public function hasAnyRole(array|string $roles): bool
+    public function hasAnyRole(string|array $roles): bool
     {
         if (is_array($roles)) {
             foreach ($roles as $role) {

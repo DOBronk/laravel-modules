@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Person;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class ControllerPerson extends Controller
+class ControllerMentor extends Controller
 {
-
+    //
     public function index(Request $request)
     {
-        $students = User::all();
+        $mentors = User::all();
 
-        return view("persons.list2", [
-            'persons' => $students,
+        return view("mentors.list", [
+            'mentors' => $mentors,
             'user' => $request->user()
         ]);
     }
-
 
 }
