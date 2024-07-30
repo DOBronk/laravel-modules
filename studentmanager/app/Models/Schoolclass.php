@@ -10,5 +10,24 @@ class Schoolclass extends Model
     use HasFactory;
     protected $fillable = ['id', 'name', 'year', 'mentor_id'];
 
-    protected $table = 'persons';
+    protected $table = 'classrooms';
+
+    /**
+     * Returns the mentor associated with this classroom
+     * @return User|null
+     */
+    public function mentor()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'mentor_id')->first();
+    }
+
+    public function students()
+    {
+        $ret = $this->belongsToMany('App\Models\User')->withTimestamps()->get();
+        if ($ret) {
+            return $ret;
+        }
+        return [];
+    }
+
 }

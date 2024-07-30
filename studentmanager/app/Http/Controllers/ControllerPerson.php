@@ -22,4 +22,6 @@ class ControllerPerson extends Controller
             'user' => $request->user()
         ]);
     }
+
+
 }

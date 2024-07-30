@@ -20,7 +20,9 @@
                             Students
                         </x-nav-link>
                     @endif
-
+                    <x-nav-link href="/classes">
+                        Classrooms
+                    </x-nav-link>
                 </div>
             </div>
 
