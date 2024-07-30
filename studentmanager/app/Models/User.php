@@ -56,23 +56,18 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Role')->withTimestamps();
     }
 
-    public function authorizeRoles(array $roles): bool
+    public function hasAnyRole(array|string $roles): bool
     {
-        if ($this->hasAnyRole($roles)) {
-            return true;
-        }
-        abort(401, 'Unauthorized action');
-    }
-
-    public function hasAnyRole(array $roles): bool
-    {
-        foreach ($roles as $role) {
-            if ($this->hasRole($role)) {
-                return true;
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if ($this->hasRole($role)) {
+                    return true;
+                }
             }
+            return false;
+        } else {
+            return $this->hasRole($roles);
         }
-
-        return false;
     }
 
     public function hasRole(string $role): bool
