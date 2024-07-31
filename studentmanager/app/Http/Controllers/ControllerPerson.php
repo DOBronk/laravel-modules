@@ -11,6 +11,7 @@ class ControllerPerson extends Controller
     public function list_students(Request $request)
     {
         $students = Roles::where('name', 'ROLE_STUDENT')->get()->first()->users();
+
         return view("students.list", [
             'students' => $students,
             'user' => $request->user()

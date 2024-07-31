@@ -24,10 +24,10 @@
                                     <td>{{ $mentor->email }}</td>
                                     <td>{{ $mentor->phone }}</td>
                                 </tr>
+                            @endforeach
                         </table>
-                    @endforeach
-                @else
-                    <p>Geen mentors gevonden.</p>
+                    @else
+                        <p>Geen mentors gevonden.</p>
                     @endif
                 </div>
             </div>
