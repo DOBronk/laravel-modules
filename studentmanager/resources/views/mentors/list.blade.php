@@ -9,16 +9,26 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @forelse($mentors as $mentor)
-                        <tr>
-                            <td> Naam: {{ $mentor->name }} </td>
-                            <td> Geboortejaar: {{ $mentor->dob }} </td>
-                        </tr>
-                    @empty
-                        <p>Geen mentors gevonden.</p>
-                    @endforelse
-                    </table>
-
+                    @if ($mentors)
+                        <table>
+                            <tr>
+                                <td style="text-align:left">Naam</td>
+                                <td style="text-align:left">Geboortedatum</td>
+                                <td style="text-align:left">Email</td>
+                                <td style="text-align:left">Telefoon</td>
+                            </tr>
+                            @foreach ($mentors as $mentor)
+                                <tr>
+                                    <td>{{ $mentor->name }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($mentor->dob)->format('d-m-Y') }}</td>
+                                    <td>{{ $mentor->email }}</td>
+                                    <td>{{ $mentor->phone }}</td>
+                                </tr>
+                        </table>
+                    @endforeach
+                @else
+                    <p>Geen mentors gevonden.</p>
+                    @endif
                 </div>
             </div>
         </div>

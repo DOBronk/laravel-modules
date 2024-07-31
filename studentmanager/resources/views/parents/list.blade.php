@@ -9,24 +9,27 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <table>
-                        <tr>
-                            <th style="text-align:left">Naam</th>
-                            <th style="text-align:left">Geboortedatum</th>
-                            <th style="text-align:left">Email</th>
-                            <th style="text-align:left">Telefoon</th>
-                        </tr>
-                        @forelse($parents as $parent)
+                    @if ($parents)
+                        <table>
                             <tr>
-                                <td>{{ $parent->name }}</td>
-                                <td>{{ \Carbon\Carbon::parse($parent->dob)->format('d-m-Y') }}</td>
-                                <td>{{ $parent->email }}</td>
-                                <td>{{ $parent->phone }}</td>
+                                <td style="text-align:left">Naam</th>
+                                <td style="text-align:left">Geboortedatum</th>
+                                <td style="text-align:left">Email</th>
+                                <td style="text-align:left">Telefoon</th>
                             </tr>
-                        @empty
-                            <p>Geen ouders gevonden.</p>
-                        @endforelse
-                    </table>
+                            @foreach ($parents as $parent)
+                                <tr>
+                                    <td>{{ $parent->name }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($parent->dob)->format('d-m-Y') }}</td>
+                                    <td>{{ $parent->email }}</td>
+                                    <td>{{ $parent->phone }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    @else
+                        <p>Geen ouders gevonden.</p>
+                    @endif
+
                     <!--            {{ $user->roles()->first()['name'] }} -->
                 </div>
             </div>
