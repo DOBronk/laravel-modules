@@ -10,7 +10,7 @@ class ControllerPerson extends Controller
 
     public function list_students(Request $request)
     {
-        $students = Roles::where('name', 'ROLE_STUDENT')->get()->first()->users();
+        $students = Roles::where('name', 'ROLE_STUDENT')->get()->first()->users()->get();
 
         return view("students.list", [
             'students' => $students,
@@ -19,7 +19,7 @@ class ControllerPerson extends Controller
     }
     public function list_mentors(Request $request)
     {
-        $mentors = Roles::where('name', 'ROLE_MENTOR')->get()->first()->users();
+        $mentors = Roles::where('name', 'ROLE_MENTOR')->get()->first()->users()->get();
         return view("mentors.list", [
             'mentors' => $mentors,
             'user' => $request->user()
@@ -28,7 +28,7 @@ class ControllerPerson extends Controller
 
     public function list_parents(Request $request)
     {
-        $parents = Roles::where('name', 'ROLE_PARENT')->get()->first()->users();
+        $parents = Roles::where('name', 'ROLE_PARENT')->get()->first()->users()->get();
         return view("parents.list", [
             'parents' => $parents,
             'user' => $request->user()

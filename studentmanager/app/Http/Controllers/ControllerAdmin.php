@@ -21,4 +21,23 @@ class ControllerAdmin extends Controller
         ]);
     }
 
+    public function create(Request $request)
+    {
+        $request->validate([
+            'roles.*.*.*' => ['required', 'unique:roles', 'bail']
+        ]);
+
+        foreach ($request->roles as $uid => $user) {
+            $userId = explode("-", $uid)[1];
+            $update_user = User::find($userId);
+            $update_user->roles()->sync($user);
+            //  $update_user->roles()->updateEzx
+            //   var_dump($user);
+        }
+        //    print (route('admin.users.list'));
+        //     back();
+        return redirect(route('admin.users.list'));
+        //   var_dump($request->input());
+    }
+
 }

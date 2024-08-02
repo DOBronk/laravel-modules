@@ -36,7 +36,7 @@
                         </x-nav-link>
                     @endif
                     @if (Auth::user()->hasAnyRole('ROLE_ADMIN'))
-                        <x-nav-link href="/admin">
+                        <x-nav-link href="/admin/users">
                             Admin panel
                         </x-nav-link>
                     @endif
