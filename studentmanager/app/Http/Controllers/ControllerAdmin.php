@@ -27,17 +27,12 @@ class ControllerAdmin extends Controller
             'roles.*.*.*' => ['required', 'unique:roles', 'bail']
         ]);
 
-        foreach ($request->roles as $uid => $user) {
-            $userId = explode("-", $uid)[1];
-            $update_user = User::find($userId);
-            $update_user->roles()->sync($user);
-            //  $update_user->roles()->updateEzx
-            //   var_dump($user);
+        foreach ($request->roles as $key => $user) {
+            // TODO: Confirm string begins with roles
+            $userId = explode("-", $key)[1];
+            User::find($userId)->roles()->sync($user);
         }
-        //    print (route('admin.users.list'));
-        //     back();
-        return redirect(route('admin.users.list'));
-        //   var_dump($request->input());
+        return back();
     }
 
 }
