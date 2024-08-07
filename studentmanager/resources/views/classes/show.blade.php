@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Klas: {{ $class->name }} Leerjaar: {{ $class->year }}
+            Klas: {{ $class->name }} Leerjaar: {{ $class->year }} Mentor: {{ $class->mentor()->name }}
         </h2>
     </x-slot>
 
@@ -9,24 +9,21 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <tr>
-                        <td> Naam: {{ $class->name }} </td>
-                        <td> Jaar: {{ $class->year }} </td>
-                        <td> Mentor: {{ $class->mentor()->name }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3"> Studenten: </td>
-                    </tr>
-                    <tr>
-                        <td>
+                    <table>
+                        <tr>
+                            <td colspan="5"> Studenten: </td>
+                        </tr>
+                        <tr>
+
                             @forelse ($class->students() as $student)
-                                <br> Naam: {{ $student->name }}
-                            @empty
-                                <br> Klas heeft (nog) geen studenten
+                        <tr>
+                            <td> Naam: {{ $student->name }} </td>
+                        @empty
+                            <td> Klas heeft (nog) geen studenten </td>
                             @endforelse
-                        </td>
-                    </tr>>
-                    </tr>
+                        </tr>
+                        </tr>
+                        </tr>
                     </table>
 
                 </div>

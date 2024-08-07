@@ -23,7 +23,7 @@ class Schoolclass extends Model
 
     public function students()
     {
-        $ret = $this->belongsToMany(User::class)->withTimestamps()->get();
+        $ret = $this->belongsToMany(User::class)->withTimestamps();
         if ($ret) {
             return $ret;
         }

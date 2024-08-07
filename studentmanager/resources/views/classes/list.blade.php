@@ -15,7 +15,7 @@
                             <td> Jaar: {{ $class->year }} </td>
                             <td> Mentor: {{ $class->mentor()->name }}</td>
                             <td> Studenten:
-                                @forelse ($class->students() as $student)
+                                @forelse ($class->students()->get() as $student)
                                     <br> Naam: {{ $student->name }}
                                 @empty
                                     <br> Klas heeft (nog) geen studenten
