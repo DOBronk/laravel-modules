@@ -18,12 +18,12 @@ class Schoolclass extends Model
      */
     public function mentor()
     {
-        return $this->hasOne('App\Models\User', 'id', 'mentor_id')->first();
+        return $this->hasOne(User::class, 'id', 'mentor_id')->first();
     }
 
     public function students()
     {
-        $ret = $this->belongsToMany('App\Models\User')->withTimestamps()->get();
+        $ret = $this->belongsToMany(User::class)->withTimestamps()->get();
         if ($ret) {
             return $ret;
         }
@@ -31,3 +31,4 @@ class Schoolclass extends Model
     }
 
 }
+

@@ -6,13 +6,15 @@ use App\Http\Controllers\ControllerSchoolclass;
 use App\Http\Controllers\ControllerAdmin;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Middleware\CheckRole;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
+// TODO: Move to controller
+Route::get('/dashboard', function (Request $request) {
+    return view('dashboard', ['user' => $request->user()]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
