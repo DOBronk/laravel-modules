@@ -15,12 +15,13 @@
                         </tr>
                         <tr>
 
-                            @forelse ($class->students() as $student)
+                            @forelse ($class->students()->get() as $student)
                         <tr>
                             <td> Naam: {{ $student->name }} </td>
-                        @empty
-                            <td> Klas heeft (nog) geen studenten </td>
-                            @endforelse
+                        </tr>
+                    @empty
+                        <td> Klas heeft (nog) geen studenten </td>
+                        @endforelse
                         </tr>
                         </tr>
                         </tr>

@@ -24,6 +24,9 @@
                         @if ($user->hasRole('ROLE_PARENT'))
                             @php(array_push($array, 'Ouder'))
                         @endif
+                        @if ($user->hasRole('ROLE_ADMIN'))
+                            @php(array_push($array, 'Administrator'))
+                        @endif
                         {{ implode(', ', $array) }}
                     @endif
                     <br><br>
