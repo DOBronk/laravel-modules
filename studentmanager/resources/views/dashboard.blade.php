@@ -31,6 +31,7 @@
                         U zit in de volgende klas(sen):<br>
                         @foreach ($user->classrooms()->get() as $class)
                             Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
+                            <x-nav-link href="{{ route('class.show') }}"> Toon klas </x-nax-link>
                         @endforeach
                         <br><br>
                     @endif

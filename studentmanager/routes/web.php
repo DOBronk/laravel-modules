@@ -19,6 +19,7 @@ Route::get('/dashboard', function (Request $request) {
 
 Route::middleware('auth')->group(function () {
     Route::get('/students', [ControllerPerson::class, 'list_students'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('students.list');
+    Route::get('/classes/show', [ControllerSchoolclass::class, 'index_show'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('class.show');
     Route::get('/classes', [ControllerSchoolclass::class, 'index'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('classes.list');
     Route::get('/mentors', [ControllerPerson::class, 'list_mentors'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('mentors.list');
     Route::get('/parents', [ControllerPerson::class, 'list_parents'])->middleware(CheckRole::class . ':ROLE_MENTOR,ROLE_ADMIN')->name('parents.list');
