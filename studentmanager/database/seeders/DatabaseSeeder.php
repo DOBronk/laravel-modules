@@ -44,9 +44,17 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('wachtwoord')
         ]);
 
-        $student = User::create([
+        $student0 = User::create([
             'name' => 'Test Student',
             'email' => 'student@bronk.nl',
+            'dob' => '1989/12/01',
+            'phone' => '06876543231',
+            'password' => Hash::make('wachtwoord')
+        ]);
+
+        $student1 = User::create([
+            'name' => 'Andere Student',
+            'email' => 'anders@bronk.nl',
             'dob' => '1989/12/01',
             'phone' => '06876543231',
             'password' => Hash::make('wachtwoord')
@@ -74,10 +82,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $admin->roles()->sync($adid);
-        $student->roles()->sync($sid);
+        $student0->roles()->sync($sid);
+        $student1->roles()->sync($sid);
         $mentor->roles()->sync($mid);
         $parent->roles()->sync($pid);
         $students = $class->students();
-        $students->attach($student);
+        $students->attach($student1);
+        $students->attach($student0);
     }
 }
