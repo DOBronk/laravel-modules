@@ -31,33 +31,33 @@
                     @endif
                     <br><br>
                     @if ($user->hasRole('ROLE_STUDENT'))
-                        U zit in de volgende klas(sen):<br>
+                        U zit in de volgende klas(sen):<br><br>
                         @forelse ($user->classrooms()->get() as $class)
                             Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
-                            <x-nav-link href="{{ route('class.show') }}"> Toon klas </x-nax-link>
+                            <x-nav-link href="{{ route('class.show') }}"> Toon klas </x-nax-link><br>
                             @empty
-                                U bent momenteel geen student van een klas.
+                                U bent momenteel geen student van een klas.<br>
                         @endforelse
-                        <br><br>
+                        <br>
                     @endif
 
                     @if ($user->hasRole('ROLE_MENTOR'))
-                        U bent mentor van de volgende klas(sen):<br>
+                        U bent mentor van de volgende klas(sen):<br><br>
                         @forelse ($user->mentors()->get() as $class)
                             Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
-                            <x-nav-link href="{{ route('class.show') }}"> Toon klas </x-nax-link>
+                            <x-nav-link href="{{ route('class.show') }}"> Toon klas </x-nax-link> <br>
                             @empty
-                                U bent momenteel mentor van een klas.
+                                U bent momenteel geen mentor van een klas.<br>
                         @endforelse
-                        <br><br>
+                        <br>
                     @endif
 
                     @if ($user->hasRole('ROLE_PARENT'))
-                        U bent ouder van de volgende kind(eren):<br>
+                        U bent ouder van de volgende kind(eren):<br><br>
                         @forelse ($user->parents()->get() as $class)
                             Naam: {{ $class->name }}
                         @empty
-                            U bent momenteel geen ouder van een kind.
+                            U bent momenteel geen ouder van een kind.<br>
                         @endforelse
                         <br>
                     @endif
