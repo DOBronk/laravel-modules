@@ -63,6 +63,7 @@ class DatabaseSeeder extends Seeder
         $mentor = User::create([
             'name' => 'Test Mentor',
             'email' => 'mentor@bronk.nl',
+            'dob' => '1989/12/01',
             'phone' => '06876543231',
             'password' => Hash::make('wachtwoord')
         ]);
@@ -82,6 +83,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $admin->roles()->sync($adid);
+        //   $admin->mentors()->attach($class);
+        //   $admin->parents()->attach($parent);
         $student0->roles()->sync($sid);
         $student1->roles()->sync($sid);
         $mentor->roles()->sync($mid);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Roles;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ControllerPerson extends Controller
@@ -34,5 +35,14 @@ class ControllerPerson extends Controller
             'user' => $request->user()
         ]);
     }
+
+    public function show_parent(Request $request)
+    {
+        return view("parents.show", [
+            'parent' => User::where('id', $request->id)->first(),
+            'user' => $request->user()
+        ]);
+    }
+
 
 }

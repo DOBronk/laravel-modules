@@ -51,30 +51,18 @@ class User extends Authenticatable
 
     public function parents()
     {
-        return $this->whereHas(
-            $this->roles(),
-            function ($mentor) {
-                $mentor->where('name', 'ROLE_PARENT');
-            }
-        )->get();
-        // TODO: Create this, both students and parents should be coupled together
+        return $this->belongsToMany(User::class, 'parent_user', 'user_id', 'parent_id');
     }
 
     public function mentors()
     {
-        return $this->classrooms()->where('mentor_id', $this->id)->get();
-        /*   $role = $this->roles()->where('name', 'ROLE_MENTOR')->first();
-           if ($role) {
-               return $this->roles()->where('name', 'ROLE_MENTOR')->first();
-           }
-           return false; */
-        // TODO: In case of student this will probably coupled with a single mentor, when applied to parents these could be multiple since they can have multiple students
+        return $this->belongsToMany(Schoolclass::class, 'mentor_user', 'classroom_id', 'mentor_id');
     }
+
     public function classrooms()
     {
         return $this->belongsToMany(Schoolclass::class)->withTimestamps();
     }
-
 
     public function roles()
     {
@@ -88,8 +76,6 @@ class User extends Authenticatable
         }
         return false;
     }
-
-
     public function hasAnyRole(string|array $roles): bool
     {
         if (is_array($roles)) {

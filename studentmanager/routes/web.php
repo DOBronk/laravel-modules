@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/classes', [ControllerSchoolclass::class, 'index'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('classes.list');
     Route::get('/mentors', [ControllerPerson::class, 'list_mentors'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('mentors.list');
     Route::get('/parents', [ControllerPerson::class, 'list_parents'])->middleware(CheckRole::class . ':ROLE_MENTOR,ROLE_ADMIN')->name('parents.list');
+    Route::post('/parents/show', [ControllerPerson::class, 'show_parent'])->middleware(CheckRole::class . ':ROLE_MENTOR,ROLE_ADMIN')->name('parent.show');
     Route::get('/admin/users', [ControllerAdmin::class, 'index'])->middleware(CheckRole::class . ':ROLE_ADMIN')->name('admin.users.list');
     Route::post('/admin/create', [ControllerAdmin::class, 'create'])->middleware(CheckRole::class . ":ROLE_ADMIN")->name('admin.users.create');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

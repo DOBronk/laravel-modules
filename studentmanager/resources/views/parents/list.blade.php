@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Studenten lijst') }}
+            {{ __('Ouder lijst') }}
         </h2>
     </x-slot>
 
@@ -12,10 +12,11 @@
                     @if ($parents)
                         <table>
                             <tr>
-                                <td style="text-align:left">Naam</th>
-                                <td style="text-align:left">Geboortedatum</th>
-                                <td style="text-align:left">Email</th>
-                                <td style="text-align:left">Telefoon</th>
+                                <td style="text-align:left">Naam</td>
+                                <td style="text-align:left">Geboortedatum</td>
+                                <td style="text-align:left">Email</td>
+                                <td style="text-align:left">Telefoon</td>
+                                <td></td>
                             </tr>
                             @foreach ($parents as $parent)
                                 <tr>
@@ -23,6 +24,12 @@
                                     <td>{{ \Carbon\Carbon::parse($parent->dob)->format('d-m-Y') }}</td>
                                     <td>{{ $parent->email }}</td>
                                     <td>{{ $parent->phone }}</td>
+                                    <td>
+                                        <form method="post" action="{{ route('parent.show', absolute: false) }}">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $parent->id }}">
+                                            <x-primary-button>Ouder bekijken</x-primary-button>
+                                        </form>
                                 </tr>
                             @endforeach
                         </table>

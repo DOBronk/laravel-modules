@@ -32,21 +32,32 @@
                     <br><br>
                     @if ($user->hasRole('ROLE_STUDENT'))
                         U zit in de volgende klas(sen):<br>
-                        @foreach ($user->classrooms()->get() as $class)
+                        @forelse ($user->classrooms()->get() as $class)
                             Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
                             <x-nav-link href="{{ route('class.show') }}"> Toon klas </x-nax-link>
-                        @endforeach
+                            @empty
+                                U bent momenteel geen student van een klas.
+                        @endforelse
                         <br><br>
                     @endif
+
                     @if ($user->hasRole('ROLE_MENTOR'))
                         U bent mentor van de volgende klas(sen):<br>
-                        @forelse ($user->mentors() as $class)
-                            @if ($class->mentor()->id == $user->id)
-                                Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor
-                                {{ $class->mentor()->name }}
-                            @endif
+                        @forelse ($user->mentors()->get() as $class)
+                            Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
+                            <x-nav-link href="{{ route('class.show') }}"> Toon klas </x-nax-link>
+                            @empty
+                                U bent momenteel mentor van een klas.
+                        @endforelse
+                        <br><br>
+                    @endif
+
+                    @if ($user->hasRole('ROLE_PARENT'))
+                        U bent ouder van de volgende kind(eren):<br>
+                        @forelse ($user->parents()->get() as $class)
+                            Naam: {{ $class->name }}
                         @empty
-                            U bent momenteel geen mentor van een klas.
+                            U bent momenteel geen ouder van een kind.
                         @endforelse
                         <br>
                     @endif
