@@ -23,4 +23,11 @@ class ControllerSchoolclass extends Controller
         $class = User::where('id', $request->user()->id)->first();
         return view("classes.show", ['class' => $class->classrooms()->first()]);
     }
+
+
+    public function show(Request $request)
+    {
+        $class = Schoolclass::where('id', $request->id)->first();
+        return view("classes.show", ['class' => $class]);
+    }
 }
