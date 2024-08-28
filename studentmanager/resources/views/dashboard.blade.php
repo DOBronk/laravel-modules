@@ -50,9 +50,13 @@
                         U bent mentor van de volgende klas(sen):<br><br>
                         @forelse ($user->mentors()->get() as $class)
                             Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
-                            <x-nav-link href="{{ route('class.show') }}"> Toon klas </x-nax-link> <br>
-                            @empty
-                                U bent momenteel geen mentor van een klas.<br>
+                            <form action="{{ route('class.show') }}" method="post"><x-primary-button> Toon klas
+                                    @csrf
+                                </x-primary-button>
+                                <input type="hidden" value="{{ $class->id }}" name="id" />
+                            </form>
+                        @empty
+                            U bent momenteel geen mentor van een klas.<br>
                         @endforelse
                         <br>
                     @endif

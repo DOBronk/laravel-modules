@@ -11,15 +11,11 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
                     @forelse($classes as $class)
-                        <header>
-                            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                Schoolklas: {{ $class->name }}
-                            </h2>
-
-                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Leerjaar: {{ $class->year }} Mentor: {{ $class->mentor()->name }}
-                            </p>
-                        </header><br>
+                        Schoolklas: {{ $class->name }}
+                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                            Leerjaar: {{ $class->year }} Mentor: {{ $class->mentor()->name }}
+                        </p>
+                        <br>
                         <table>
                             <tr>
                                 <td colspan=3> Studenten: </td>
@@ -34,10 +30,13 @@
                                 </tr>
                             @endforelse
                             </tr>
-                        @empty
-                            <p>Geen klassen gevonden.</p>
+                        </table><br>
+                    @empty
+                        <p>Geen klassen gevonden.</p>
                     @endforelse
-                    </table>
+
+                    <br>
+
 
                 </div>
             </div>
