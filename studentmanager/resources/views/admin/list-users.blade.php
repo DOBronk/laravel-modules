@@ -23,7 +23,7 @@
                             </tr>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td>{{ $user->name }} rooms: {{ count($user->classrooms()->get()) }}</td>
+                                    <td>{{ $user->name }} </td>
                                     <td>{{ \Carbon\Carbon::parse($user->dob)->format('d-m-Y') }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone }}</td>

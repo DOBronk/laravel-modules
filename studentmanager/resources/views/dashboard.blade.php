@@ -60,7 +60,7 @@
                     @if ($user->hasRole('ROLE_PARENT'))
                         U bent ouder van de volgende kind(eren):<br><br>
                         @forelse ($user->parents()->get() as $class)
-                            Naam: {{ $class->name }}
+                            Naam: {{ $class->name }} <br>
                         @empty
                             U bent momenteel geen ouder van een kind.<br>
                         @endforelse
