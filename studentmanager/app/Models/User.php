@@ -78,9 +78,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Schoolclass::class, 'mentor_user', 'mentor_id', 'classroom_id');
     }
     /**
-     * Retrieve all mentors attached to this user 
+     * Retrieve all mentors attached to this user
      *
-     * @return BelongsToMany
+     * @return array
      */
     public function mentors(): array
     {
