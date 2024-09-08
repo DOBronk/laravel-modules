@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
 class User extends Authenticatable
 {
@@ -76,6 +76,19 @@ class User extends Authenticatable
     public function mentorOf()
     {
         return $this->belongsToMany(Schoolclass::class, 'mentor_user', 'mentor_id', 'classroom_id');
+    }
+    /**
+     * Retrieve all mentors attached to this user 
+     *
+     * @return BelongsToMany
+     */
+    public function mentors(): array
+    {
+        $mentors = [];
+        foreach ($this->classrooms()->get() as $class) {
+            array_push($mentors, $class->mentor());
+        }
+        return $mentors;
     }
     /**
      * Retrieve all classrooms this user is attached to

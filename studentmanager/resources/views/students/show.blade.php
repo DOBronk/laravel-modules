@@ -18,7 +18,12 @@
                     @empty
                         Geen ouders gevonden
                     @endforelse
-
+                    <br>Mentors: <br>
+                    @forelse($student->mentors() as $mentor)
+                        {{ $mentor->name }}
+                    @empty
+                        Geen mentors gevonden
+                    @endforelse
                 </div>
             </div>
         </div>
