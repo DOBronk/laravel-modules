@@ -86,7 +86,9 @@ class User extends Authenticatable
     {
         $mentors = [];
         foreach ($this->classrooms()->get() as $class) {
-            array_push($mentors, $class->mentor());
+            if (!in_array($class->mentor(), $mentors)) {
+                array_push($mentors, $class->mentor());
+            }
         }
         return $mentors;
     }
