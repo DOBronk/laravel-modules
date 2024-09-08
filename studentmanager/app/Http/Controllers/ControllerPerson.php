@@ -44,5 +44,12 @@ class ControllerPerson extends Controller
         ]);
     }
 
+    public function show_student(Request $request)
+    {
+        return view("students.show", [
+            'student' => User::where('id', $request->id)->first(),
+            'user' => $request->user()
+        ]);
+    }
 
 }

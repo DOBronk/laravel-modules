@@ -48,7 +48,7 @@
 
                     @if ($user->hasRole('ROLE_MENTOR'))
                         U bent mentor van de volgende klas(sen):<br><br>
-                        @forelse ($user->mentors()->get() as $class)
+                        @forelse ($user->mentorOf()->get() as $class)
                             Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
                             <form action="{{ route('class.show') }}" method="post"><x-primary-button> Toon klas
                                     @csrf
@@ -63,8 +63,15 @@
 
                     @if ($user->hasRole('ROLE_PARENT'))
                         U bent ouder van de volgende kind(eren):<br><br>
-                        @forelse ($user->parents()->get() as $class)
-                            Naam: {{ $class->name }} <br>
+                        @forelse ($user->children()->get() as $class)
+                            Naam: {{ $class->name }}
+                            <form action="{{ route('student.show') }}" method="post"><x-primary-button> Toon student
+                                    @csrf
+                                </x-primary-button>
+                                <input type="hidden" value="{{ $class->id }}" name="id" />
+                            </form>
+
+                            <br>
                         @empty
                             U bent momenteel geen ouder van een kind.<br>
                         @endforelse

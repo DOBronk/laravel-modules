@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -49,21 +50,47 @@ class User extends Authenticatable
         ];
     }
 
-    public function parents()
+    /**
+     * Retrieve any children attached to user
+     *
+     * @return BelongsToMany
+     */
+    public function children(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'parent_user', 'parent_id', 'user_id');
     }
-
-    public function mentors()
+    /**
+     * Retrieve any parents attached to user
+     *
+     * @return BelongsToMany
+     */
+    public function parents(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'parent_user', 'user_id', 'parent_id');
+    }
+    /**
+     * Retrieve any classrooms where this user is the mentor
+     *
+     * @return BelongsToMany
+     */
+    public function mentorOf()
     {
         return $this->belongsToMany(Schoolclass::class, 'mentor_user', 'mentor_id', 'classroom_id');
     }
-
+    /**
+     * Retrieve all classrooms this user is attached to
+     *
+     * @return BelongsToMany
+     */
     public function classrooms()
     {
         return $this->belongsToMany(Schoolclass::class)->withTimestamps();
     }
-
+    /**
+     * Retrieve the roles of the user
+     *
+     * @return BelongsToMany
+     */
     public function roles()
     {
         return $this->belongsToMany(Role::class)->withTimestamps(); // PIVOT
