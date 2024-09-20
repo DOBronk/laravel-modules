@@ -7,6 +7,8 @@ use App\Http\Controllers\ControllerAdmin;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Middleware\CheckRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,11 +19,12 @@ Route::get('/dashboard', function (Request $request) {
     return view('dashboard', ['user' => $request->user()]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/students', [ControllerPerson::class, 'list_students'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->middleware(['auth', 'verified'])->name('students.list');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/students', [ControllerPerson::class, 'list_students'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('students.list');
-    Route::post('/students/show', [ControllerPerson::class, 'show_student'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('student.show');
+    Route::get('/students/{id}', [ControllerPerson::class, 'show_student'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('student.show');
     Route::get('/classes/show', [ControllerSchoolclass::class, 'index_show'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('class.show');
-    Route::post('/classes/show', [ControllerSchoolclass::class, 'show'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('class.show');
+    Route::get('/classes/{id}', [ControllerSchoolclass::class, 'show'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('class');
     Route::get('/classes', [ControllerSchoolclass::class, 'index'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('classes.list');
     Route::get('/mentors', [ControllerPerson::class, 'list_mentors'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('mentors.list');
     Route::get('/parents', [ControllerPerson::class, 'list_parents'])->middleware(CheckRole::class . ':ROLE_MENTOR,ROLE_ADMIN')->name('parents.list');
@@ -31,6 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/lang/{lang}', function (Request $request, $lang) {
+        Session::put('locale', $lang);
+        App::setLocale($lang);
+        return back();
+    });
 });
 
 

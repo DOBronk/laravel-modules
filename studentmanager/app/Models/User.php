@@ -50,6 +50,14 @@ class User extends Authenticatable
         ];
     }
 
+    public function relatedToStudent(int $studentId)
+    {
+        if ($this->hasRole('ROLE_PARENT')) {
+            // Check if student is a child 
+        } elseif ($this->hasRole('ROLE_STUDENT')) {
+
+        }
+    }
     /**
      * Retrieve any children attached to user
      *

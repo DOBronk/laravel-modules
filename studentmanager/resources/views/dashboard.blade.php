@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Hoofdmenu') }}
+            {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
@@ -50,11 +50,8 @@
                         U bent mentor van de volgende klas(sen):<br><br>
                         @forelse ($user->mentorOf()->get() as $class)
                             Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
-                            <form action="{{ route('class.show') }}" method="post"><x-primary-button> Toon klas
-                                    @csrf
-                                </x-primary-button>
-                                <input type="hidden" value="{{ $class->id }}" name="id" />
-                            </form>
+                            <x-nav-link :href="route('class', $class->id)" name="id">{{ __('Show class') }}</x-nav-link>
+                            <br>
                         @empty
                             U bent momenteel geen mentor van een klas.<br>
                         @endforelse
@@ -65,12 +62,7 @@
                         U bent ouder van de volgende kind(eren):<br><br>
                         @forelse ($user->children()->get() as $class)
                             Naam: {{ $class->name }}
-                            <form action="{{ route('student.show') }}" method="post"><x-primary-button> Toon student
-                                    @csrf
-                                </x-primary-button>
-                                <input type="hidden" value="{{ $class->id }}" name="id" />
-                            </form>
-
+                            <x-nav-link :href="route('student.show', $class->id)">{{ __('Show student') }}</x-nav-link>
                             <br>
                         @empty
                             U bent momenteel geen ouder van een kind.<br>
