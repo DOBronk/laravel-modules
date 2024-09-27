@@ -15,11 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// TODO: Move to controller
-Route::get('/dashboard', function (Request $request) {
-    return view('dashboard', ['user' => $request->user()]);
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
@@ -30,9 +25,8 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::get('/students', [ControllerPerson::class, 'list_students'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->middleware(['auth', 'verified'])->name('students.list');
-
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/students', [ControllerPerson::class, 'list_students'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('students.list');
     Route::get('/students/{id}', [ControllerPerson::class, 'show_student'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('student.show');
     Route::get('/classes/show', [ControllerSchoolclass::class, 'index_show'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('class.show');
     Route::get('/classes/{id}', [ControllerSchoolclass::class, 'show'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('class');
@@ -45,11 +39,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/lang/{lang}', function (Request $request, $lang) {
+    Route::get('/lang/{lang}', function ($lang) {
         Session::put('locale', $lang);
         App::setLocale($lang);
         return back();
     });
+    Route::get('/dashboard', function (Request $request) {
+        return view('dashboard', ['user' => $request->user()]);
+    })->name('dashboard');
 });
 
 
