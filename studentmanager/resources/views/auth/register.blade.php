@@ -22,8 +22,8 @@
         <div class="mt-4">
             <x-input-label for="dob" :value="__('Date of birth')" />
 
-            <x-text-input id="dob" class="block mt-1 w-full" type="date" name="dob" required
-                autocomplete="new-dob" />
+            <x-text-input id="dob" class="block mt-1 w-full" type="date" name="dob" :value="old('dob')"
+                required autocomplete="new-dob" />
 
             <x-input-error :messages="$errors->get('dob')" class="mt-2" />
         </div>
@@ -32,8 +32,8 @@
         <div class="mt-4">
             <x-input-label for="phone" :value="__('Phone number')" />
 
-            <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone" required
-                autocomplete="new-phone" />
+            <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')"
+                required autocomplete="new-phone" />
 
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>

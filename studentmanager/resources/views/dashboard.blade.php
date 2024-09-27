@@ -10,7 +10,8 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if (!count($user->roles()->get()))
-                        U heeft op dit moment nog geen rechten, neem contact op met een administrator om toegang tot het
+                        U heeft op dit moment nog geen rechten, neem contact op met een
+                        administrator om toegang tot het
                         systeem toegewezen te krijgen.
                     @else
                         Welkom {{ $user->name }}, u bent momenteel ingelogged als:
@@ -29,12 +30,15 @@
                         @endif
                         {{ implode(', ', $array) }}
                     @endif
+
                     <br><br>
                     @if ($user->hasRole('ROLE_STUDENT'))
                         U zit in de volgende klas(sen):<br><br>
                         @forelse ($user->classrooms()->get() as $class)
-                            Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
-                            <form action="{{ route('class.show') }}" method="post"><x-primary-button> Toon klas
+                            Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor
+                            {{ $class->mentor()->name }}
+                            <form action="{{ route('class.show') }}" method="post"><x-primary-button>
+                                    Toon klas
                                     @csrf
                                 </x-primary-button>
                                 <input type="hidden" value="{{ $class->id }}" name="id" />
@@ -49,7 +53,8 @@
                     @if ($user->hasRole('ROLE_MENTOR'))
                         U bent mentor van de volgende klas(sen):<br><br>
                         @forelse ($user->mentorOf()->get() as $class)
-                            Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor {{ $class->mentor()->name }}
+                            Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor
+                            {{ $class->mentor()->name }}
                             <x-nav-link :href="route('class', $class->id)" name="id">{{ __('Show class') }}</x-nav-link>
                             <br>
                         @empty
