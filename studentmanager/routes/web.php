@@ -26,12 +26,14 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/students', [ControllerPerson::class, 'list_students'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('students.list');
-    Route::get('/students/{id}', [ControllerPerson::class, 'show_student'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('student.show');
-    Route::get('/classes/show', [ControllerSchoolclass::class, 'index_show'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('class.show');
-    Route::get('/classes/{id}', [ControllerSchoolclass::class, 'show'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('class');
-    Route::get('/classes', [ControllerSchoolclass::class, 'index'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('classes.list');
-    Route::get('/mentors', [ControllerPerson::class, 'list_mentors'])->middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->name('mentors.list');
+    Route::middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->group(function () {
+        Route::get('/students', [ControllerPerson::class, 'list_students'])->name('students.list');
+        Route::get('/students/{id}', [ControllerPerson::class, 'show_student'])->name('student.show');
+        Route::get('/classes/show', [ControllerSchoolclass::class, 'index_show'])->name('class.show');
+        Route::get('/classes/{id}', [ControllerSchoolclass::class, 'show'])->name('class');
+        Route::get('/classes', [ControllerSchoolclass::class, 'index'])->name('classes.list');
+        Route::get('/mentors', [ControllerPerson::class, 'list_mentors'])->name('mentors.list');
+    });
     Route::get('/parents', [ControllerPerson::class, 'list_parents'])->middleware(CheckRole::class . ':ROLE_MENTOR,ROLE_ADMIN')->name('parents.list');
     Route::post('/parents/show', [ControllerPerson::class, 'show_parent'])->middleware(CheckRole::class . ':ROLE_MENTOR,ROLE_ADMIN')->name('parent.show');
     Route::get('/admin/users', [ControllerAdmin::class, 'index'])->middleware(CheckRole::class . ':ROLE_ADMIN')->name('admin.users.list');
