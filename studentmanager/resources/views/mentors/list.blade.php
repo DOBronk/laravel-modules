@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Mentorenlijst') }}
+            {{ __('Mentorlist') }}
         </h2>
     </x-slot>
 
@@ -12,10 +12,10 @@
                     @if ($mentors)
                         <table>
                             <tr>
-                                <td style="text-align:left">Naam</td>
-                                <td style="text-align:left">Geboortedatum</td>
-                                <td style="text-align:left">Email</td>
-                                <td style="text-align:left">Telefoon</td>
+                                <td style="text-align:left">{{ __('Name') }}</td>
+                                <td style="text-align:left">{{ __('Date of birth') }}</td>
+                                <td style="text-align:left">{{ __('Email') }}</td>
+                                <td style="text-align:left">{{ __('Phone') }}</td>
                             </tr>
                             @foreach ($mentors as $mentor)
                                 <tr>
@@ -27,7 +27,7 @@
                             @endforeach
                         </table>
                     @else
-                        <p>Geen mentors gevonden.</p>
+                        <p>{{ __('No mentors found') }}.</p>
                     @endif
                 </div>
             </div>

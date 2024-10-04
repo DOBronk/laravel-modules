@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Studenten lijst') }}
+            {{ __('Student list') }}
         </h2>
     </x-slot>
 
@@ -11,11 +11,11 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <table>
                         <tr>
-                            <th style="text-align:left">Naam</th>
-                            <th style="text-align:left">Geboortedatum</th>
+                            <th style="text-align:left">{{ __('Name') }}</th>
+                            <th style="text-align:left">{{ __('Date of birth') }}</th>
                             @if (Auth::user()->roles()->first()['name'] == 'ROLE_MENTOR' || Auth::user()->roles()->first()['name'] == 'ROLE_ADMIN')
-                                <th style="text-align:left">Email</th>
-                                <th style="text-align:left">Telefoon</th>
+                                <th style="text-align:left">{{ __('Email') }}</th>
+                                <th style="text-align:left">{{ __('Phone') }}</th>
                             @endif
                         </tr>
                         @forelse($students as $student)
@@ -28,7 +28,7 @@
                                 @endif
                             </tr>
                         @empty
-                            <p>Geen studenten gevonden.</p>
+                            <p>{{ __('No students found') }}</p>
                         @endforelse
                     </table>
                 </div>

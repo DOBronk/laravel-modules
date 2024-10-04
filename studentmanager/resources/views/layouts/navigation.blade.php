@@ -70,7 +70,7 @@
 
                         <x-slot name="content">
                             <x-dropdown-link :href="route('messages.list')">
-                                {{ __('Messages Inbox') }} ({{ Auth::user()->unread_messages() }})
+                                {{ __('Message Inbox') }} ({{ Auth::user()->unread_messages() }})
                             </x-dropdown-link>
 
                             <x-dropdown-link :href="route('profile.edit')">

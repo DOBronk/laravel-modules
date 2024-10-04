@@ -10,19 +10,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    Naam: {{ $student->name }} <br>
-                    Geboortedatum: {{ \Carbon\Carbon::parse($student->dob)->format('d-m-Y') }}<br><br>
-                    Ouders: <br>
+                    {{ __('Name') }}: {{ $student->name }} <br>
+                    {{ __('Date of birth') }}: {{ \Carbon\Carbon::parse($student->dob)->format('d-m-Y') }}<br><br>
+                    {{ __('Parents') }}: <br>
                     @forelse($student->parents()->get() as $parent)
                         {{ $parent->name }} <br>
                     @empty
-                        Geen ouders gevonden <br>
+                        {{ __('No parents found') }} <br>
                     @endforelse
-                    <br>Mentors: <br>
+                    <br>{{ __('Mentors') }}: <br>
                     @forelse($student->mentors() as $mentor)
                         {{ $mentor->name }} <br>
                     @empty
-                        Geen mentors gevonden <br>
+                        {{ __('No mentors found') }} <br>
                     @endforelse
                 </div>
             </div>

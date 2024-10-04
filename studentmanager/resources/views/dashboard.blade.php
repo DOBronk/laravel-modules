@@ -10,9 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if (!count($user->roles()->get()))
-                        U heeft op dit moment nog geen rechten, neem contact op met een
-                        administrator om toegang tot het
-                        systeem toegewezen te krijgen.
+                        {{ __('At this moment you do not have any rights, please contact an administrator to get access to the system.') }}
                     @else
                         Welkom {{ $user->name }}, u bent momenteel ingelogged als:
                         @php($array = [])

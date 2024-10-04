@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Ouder lijst') }}
+            {{ __('Parent list') }}
         </h2>
     </x-slot>
 
@@ -12,10 +12,10 @@
                     @if ($parents)
                         <table>
                             <tr>
-                                <td style="text-align:left">Naam</td>
-                                <td style="text-align:left">Geboortedatum</td>
-                                <td style="text-align:left">Email</td>
-                                <td style="text-align:left">Telefoon</td>
+                                <td style="text-align:left">{{ __('Name') }}</td>
+                                <td style="text-align:left">{{ __('Date of birth') }}</td>
+                                <td style="text-align:left">{{ __('Email') }}</td>
+                                <td style="text-align:left">{{ __('Phone') }}</td>
                                 <td></td>
                             </tr>
                             @foreach ($parents as $parent)
@@ -28,13 +28,13 @@
                                         <form method="post" action="{{ route('parent.show', absolute: false) }}">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $parent->id }}">
-                                            <x-primary-button>Ouder bekijken</x-primary-button>
+                                            <x-primary-button>{{ __('View parent') }}</x-primary-button>
                                         </form>
                                 </tr>
                             @endforeach
                         </table>
                     @else
-                        <p>Geen ouders gevonden.</p>
+                        <p>{{ __('No parents found') }}</p>
                     @endif
                 </div>
             </div>

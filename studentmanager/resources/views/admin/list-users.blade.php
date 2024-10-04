@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Gebruikerslijst') }}
+            {{ __('Userlist') }}
         </h2>
     </x-slot>
     <form method="post" action="{{ route('admin.users.create', absolute: false) }}">
@@ -12,10 +12,10 @@
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <table>
                             <tr>
-                                <td style="text-align:left">Naam</td>
-                                <td style="text-align:left">Geboortedatum</td>
-                                <td style="text-align:left">Email</td>
-                                <td style="text-align:left">Telefoon</td>
+                                <td style="text-align:left">{{ __('Name') }}</td>
+                                <td style="text-align:left">{{ __('Date of birth') }}</td>
+                                <td style="text-align:left">{{ __('Email') }}</td>
+                                <td style="text-align:left">{{ __('Phone') }}</td>
 
                                 @foreach ($roles as $role)
                                     <td> {{ ucfirst(strtolower(explode('_', $role->name)[1])) }}</td>
@@ -44,7 +44,7 @@
                             @endforeach
                         </table>
                         <br>
-                        <x-primary-button>Wijzigingen opslaan</x-primary-button>
+                        <x-primary-button>{{ __('Save changes') }}</x-primary-button>
 
                     </div>
                 </div>
