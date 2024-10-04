@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
@@ -52,9 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function relatedToStudent(int $studentId)
     {
         if ($this->hasRole('ROLE_PARENT')) {
-            // Check if student is a child 
-        } elseif ($this->hasRole('ROLE_STUDENT')) {
-
+            // Check if student is a child
         }
     }
     /**
@@ -99,6 +98,25 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return $mentors;
     }
+
+    /**
+     * Return all messages from the user's inbox
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Messages::class);
+    }
+
+    /**
+     * Return total count of unread messages
+     * @return int
+     */
+    public function unread_messages(): int
+    {
+        return count($this->messages()->get()->where('read', 0));
+    }
+
     /**
      * Retrieve all classrooms this user is attached to
      *

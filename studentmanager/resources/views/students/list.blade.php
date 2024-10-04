@@ -13,7 +13,7 @@
                         <tr>
                             <th style="text-align:left">Naam</th>
                             <th style="text-align:left">Geboortedatum</th>
-                            @if ($user->roles()->first()['name'] == 'ROLE_MENTOR' || $user->roles()->first()['name'] == 'ROLE_ADMIN')
+                            @if (Auth::user()->roles()->first()['name'] == 'ROLE_MENTOR' || Auth::user()->roles()->first()['name'] == 'ROLE_ADMIN')
                                 <th style="text-align:left">Email</th>
                                 <th style="text-align:left">Telefoon</th>
                             @endif
@@ -22,7 +22,7 @@
                             <tr>
                                 <td>{{ $student->name }}</td>
                                 <td>{{ \Carbon\Carbon::parse($student->dob)->format('d-m-Y') }}</td>
-                                @if ($user->roles()->first()['name'] == 'ROLE_MENTOR' || $user->roles()->first()['name'] == 'ROLE_ADMIN')
+                                @if (Auth::user()->roles()->first()['name'] == 'ROLE_MENTOR' || Auth::user()->roles()->first()['name'] == 'ROLE_ADMIN')
                                     <td>{{ $student->email }}</td>
                                     <td>{{ $student->phone }}</td>
                                 @endif
@@ -31,7 +31,6 @@
                             <p>Geen studenten gevonden.</p>
                         @endforelse
                     </table>
-                    <!--            {{ $user->roles()->first()['name'] }} -->
                 </div>
             </div>
         </div>

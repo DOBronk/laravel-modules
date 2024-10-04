@@ -36,8 +36,6 @@
                     @else
                         <p>Geen ouders gevonden.</p>
                     @endif
-
-                    <!--            {{ $user->roles()->first()['name'] }} -->
                 </div>
             </div>
         </div>

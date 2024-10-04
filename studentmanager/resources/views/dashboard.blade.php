@@ -16,33 +16,28 @@
                     @else
                         Welkom {{ $user->name }}, u bent momenteel ingelogged als:
                         @php($array = [])
-                        @if ($user->hasRole('ROLE_STUDENT'))
+                        @if (Auth::user()->hasRole('ROLE_STUDENT'))
                             @php(array_push($array, 'Student'))
                         @endif
-                        @if ($user->hasRole('ROLE_MENTOR'))
+                        @if (Auth::user()->hasRole('ROLE_MENTOR'))
                             @php(array_push($array, 'Mentor'))
                         @endif
-                        @if ($user->hasRole('ROLE_PARENT'))
+                        @if (Auth::user()->hasRole('ROLE_PARENT'))
                             @php(array_push($array, 'Ouder'))
                         @endif
-                        @if ($user->hasRole('ROLE_ADMIN'))
+                        @if (Auth::user()->hasRole('ROLE_ADMIN'))
                             @php(array_push($array, 'Administrator'))
                         @endif
                         {{ implode(', ', $array) }}
                     @endif
 
                     <br><br>
-                    @if ($user->hasRole('ROLE_STUDENT'))
+                    @if (Auth::user()->hasRole('ROLE_STUDENT'))
                         U zit in de volgende klas(sen):<br><br>
-                        @forelse ($user->classrooms()->get() as $class)
+                        @forelse (Auth::user()->classrooms()->get() as $class)
                             Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor
                             {{ $class->mentor()->name }}
-                            <form action="{{ route('class.show') }}" method="post"><x-primary-button>
-                                    Toon klas
-                                    @csrf
-                                </x-primary-button>
-                                <input type="hidden" value="{{ $class->id }}" name="id" />
-                            </form>
+                            <x-nav-link :href="route('class', $class->id)" name="id">{{ __('Show class') }}</x-nav-link>
                             <br>
                         @empty
                             U bent momenteel geen student van een klas.<br>
@@ -50,9 +45,9 @@
                         <br>
                     @endif
 
-                    @if ($user->hasRole('ROLE_MENTOR'))
+                    @if (Auth::user()->hasRole('ROLE_MENTOR'))
                         U bent mentor van de volgende klas(sen):<br><br>
-                        @forelse ($user->mentorOf()->get() as $class)
+                        @forelse (Auth::user()->mentorOf()->get() as $class)
                             Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor
                             {{ $class->mentor()->name }}
                             <x-nav-link :href="route('class', $class->id)" name="id">{{ __('Show class') }}</x-nav-link>
@@ -63,9 +58,9 @@
                         <br>
                     @endif
 
-                    @if ($user->hasRole('ROLE_PARENT'))
+                    @if (Auth::user()->hasRole('ROLE_PARENT'))
                         U bent ouder van de volgende kind(eren):<br><br>
-                        @forelse ($user->children()->get() as $class)
+                        @forelse (Auth::user()->children()->get() as $class)
                             Naam: {{ $class->name }}
                             <x-nav-link :href="route('student.show', $class->id)">{{ __('Show student') }}</x-nav-link>
                             <br>

@@ -5,7 +5,7 @@
                 <div class="flex">
                     <!-- Logo -->
                     <div class="shrink-0  flex items-center">
-                        <x-input-label>Dennis's Student Manager </x-input-label>
+                        <x-input-label>Dennis's Student Manager</x-input-label>
                     </div>
 
                     <!-- Navigation Links -->
@@ -14,36 +14,36 @@
                             {{ __('Dashboard') }}
                         </x-nav-link>
                         @if (Auth::user()->hasAnyRole(['ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN']))
-                            <x-nav-link href="/students">
+                            <x-nav-link :href="route('students.list')" :active="request()->routeIs('students.list')">
                                 {{ __('Students') }}
                             </x-nav-link>
                         @endif
                         @if (Auth::user()->hasAnyRole(['ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN']))
-                            <x-nav-link href="/mentors">
+                            <x-nav-link :href="route('mentors.list')" :active="request()->routeIs('mentors.list')">
                                 {{ __('Mentors') }}
                             </x-nav-link>
                         @endif
                         @if (Auth::user()->hasAnyRole(['ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN']))
-                            <x-nav-link href="/classes">
+                            <x-nav-link :href="route('classes.list')" :active="request()->routeIs('classes.list')">
                                 {{ __('Classes') }}
                             </x-nav-link>
                         @endif
                         @if (Auth::user()->hasAnyRole(['ROLE_MENTOR', 'ROLE_ADMIN']))
-                            <x-nav-link href="/parents">
+                            <x-nav-link :href="route('parents.list')" :active="request()->routeIs('parents.list')">
                                 {{ __('Parents') }}
                             </x-nav-link>
                         @endif
                         @if (Auth::user()->hasAnyRole('ROLE_ADMIN'))
-                            <x-nav-link href="/admin/users">
+                            <x-nav-link :href="route('admin.users.list')" :active="request()->routeIs('admin.users.list')">
                                 {{ __('Admin') }}
                             </x-nav-link>
                         @endif
                         <div class="shrink-0  flex items-center"> <x-input-label>{{ __('Language') }}</x-input-label>
                         </div>
-                        <x-nav-link href="/lang/nl">
+                        <x-nav-link href="/lang/nl" :active="Session::get('locale') == 'nl'">
                             nl
                         </x-nav-link>
-                        <x-nav-link href="/lang/en">
+                        <x-nav-link href="/lang/en" :active="Session::get('locale') == 'en'">
                             en
                         </x-nav-link>
                     </div>
@@ -55,7 +55,7 @@
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                <div>{{ Auth::user()->name }}</div>
+                                <div>{{ Auth::user()->name }} ({{ Auth::user()->unread_messages() }})</div>
 
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -69,6 +69,10 @@
                         </x-slot>
 
                         <x-slot name="content">
+                            <x-dropdown-link :href="route('messages.list')">
+                                {{ __('Messages Inbox') }} ({{ Auth::user()->unread_messages() }})
+                            </x-dropdown-link>
+
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>

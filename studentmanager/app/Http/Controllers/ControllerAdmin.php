@@ -8,7 +8,6 @@ use App\Models\Roles;
 
 class ControllerAdmin extends Controller
 {
-    //
     public function index(Request $request)
     {
         $users = User::all();
@@ -17,7 +16,6 @@ class ControllerAdmin extends Controller
         return view("admin.list-users", [
             'users' => $users,
             'roles' => $roles,
-            'user' => $request->user()
         ]);
     }
 
@@ -28,7 +26,6 @@ class ControllerAdmin extends Controller
         ]);
 
         foreach ($request->roles as $key => $user) {
-            // TODO: Confirm string begins with roles
             $userId = explode("-", $key)[1];
             User::find($userId)->roles()->sync($user);
         }

@@ -17,11 +17,8 @@ class GlobalLocalization
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //   $request = next($request);
-        if (Session::get('locale') == 'nl') {
-            App::setLocale('nl');
-        } else {
-            App::setLocale('en');
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
         }
 
         return $next($request);
