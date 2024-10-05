@@ -33,7 +33,8 @@
                     @if (Auth::user()->hasRole('ROLE_STUDENT'))
                         U zit in de volgende klas(sen):<br><br>
                         @forelse (Auth::user()->classrooms()->get() as $class)
-                            Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor
+                            {{ __('Name') }}: {{ $class->name }} {{ __('Year') }} {{ $class->year }}
+                            {{ __('Mentor') }}
                             {{ $class->mentor()->name }}
                             <x-nav-link :href="route('class', $class->id)" name="id">{{ __('Show class') }}</x-nav-link>
                             <br>
@@ -46,7 +47,8 @@
                     @if (Auth::user()->hasRole('ROLE_MENTOR'))
                         U bent mentor van de volgende klas(sen):<br><br>
                         @forelse (Auth::user()->mentorOf()->get() as $class)
-                            Naam: {{ $class->name }} Jaar {{ $class->year }} Mentor
+                            {{ __('Name') }}: {{ $class->name }} {{ __('Year') }} {{ $class->year }}
+                            {{ __('Mentor') }}
                             {{ $class->mentor()->name }}
                             <x-nav-link :href="route('class', $class->id)" name="id">{{ __('Show class') }}</x-nav-link>
                             <br>
@@ -59,7 +61,7 @@
                     @if (Auth::user()->hasRole('ROLE_PARENT'))
                         U bent ouder van de volgende kind(eren):<br><br>
                         @forelse (Auth::user()->children()->get() as $class)
-                            Naam: {{ $class->name }}
+                            {{ __('Name') }}: {{ $class->name }}
                             <x-nav-link :href="route('student.show', $class->id)">{{ __('Show student') }}</x-nav-link>
                             <br>
                         @empty

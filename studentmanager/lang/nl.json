@@ -1,9 +1,11 @@
 {
     "Name": "Naam",
+    "Year": "Jaar",
     "Date of birth": "Geboortedatum",
     "Phone": "Telefoon",
     "Schoolyear": "Leerjaar",
     "Mentors": "Mentoren",
+    "Class": "Klas",
     "Show student": "Toon student",
     "Show class": "Toon klas",
     "Dashboard": "Hoofdmenu",
@@ -31,5 +33,6 @@
     "Messages": "Berichten",
     "Date": "Datum",
     "new messages": "nieuwe berichten",
+    "Return to inbox": "Terug naar inbox",
     "At this moment you do not have any rights, please contact an administrator to get access to the system.": "U heeft op dit moment nog geen rechten, neem contact op met een administrator om toegang tot het systeem te krijgen."
 }

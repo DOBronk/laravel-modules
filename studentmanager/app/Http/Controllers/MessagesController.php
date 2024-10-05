@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Messages;
+use App\Events\MessageSent;
 
 class MessagesController extends Controller
 {
@@ -15,7 +16,6 @@ class MessagesController extends Controller
         return view('messages.list', [
             'messages' => $messages,
             'unread' => $unread,
-            'id' => $request->user()->id
         ]);
     }
     public function show_message(Request $request, $id)
@@ -24,7 +24,13 @@ class MessagesController extends Controller
 
         return view('messages.show', [
             'message' => $message,
-            'id' => $request->user()->id
         ]);
+    }
+
+    public function create(Request $request)
+    {
+        $message = Messages::find(1);
+
+        MessageSent::dispatch($message);
     }
 }

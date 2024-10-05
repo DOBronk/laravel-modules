@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/classes', [ControllerSchoolclass::class, 'index'])->name('classes.list');
         Route::get('/mentors', [ControllerUser::class, 'list_mentors'])->name('mentors.list');
     });
+    Route::get('/message', [MessagesController::class, 'create'])->name('messages.create');
     Route::get('/messages', [MessagesController::class, 'list_messages'])->name('messages.list');
     Route::get('/messages/{id}', [MessagesController::class, 'show_message'])->name('messages.show');
     Route::get('/parents', [ControllerUser::class, 'list_parents'])->middleware(CheckRole::class . ':ROLE_MENTOR,ROLE_ADMIN')->name('parents.list');
