@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 Broadcast::channel('messages.{userId}', function (User $user, int $userId) {

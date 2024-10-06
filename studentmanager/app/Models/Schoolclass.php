@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 class Schoolclass extends Model
 {
@@ -21,13 +23,13 @@ class Schoolclass extends Model
         return $this->hasOne(User::class, 'id', 'mentor_id')->first();
     }
 
-    public function students()
+    public function students(): BelongsToMany|Collection
     {
         $ret = $this->belongsToMany(User::class)->withTimestamps();
         if ($ret) {
             return $ret;
         }
-        return [];
+        return collect([]);
     }
 
 }

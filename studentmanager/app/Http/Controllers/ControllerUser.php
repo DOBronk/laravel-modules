@@ -42,13 +42,12 @@ class ControllerUser extends Controller
     public function show_student(Request $request, $id)
     {
         // First check if the user is allowed to view this students details
-        if (!$request->user()->hasAnyRole(['ROLE_ADMIN', 'ROLE_MENTOR'])) {
-
+        if (!$request->user()->hasAnyRole(['ROLE_ADMIN', 'ROLE_MENTOR']) && !$request->user()->isRelatedToStudent($id)) {
+            abort(401, "Unauthorized");
         }
 
         return view("students.show", [
             'student' => User::where('id', $request->id)->first(),
         ]);
-
     }
 }

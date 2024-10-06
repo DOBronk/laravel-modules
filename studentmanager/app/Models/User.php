@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -50,12 +51,6 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function relatedToStudent(int $studentId)
-    {
-        if ($this->hasRole('ROLE_PARENT')) {
-            // Check if student is a child
-        }
-    }
     /**
      * Retrieve any children attached to user
      *
@@ -122,10 +117,59 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return BelongsToMany
      */
-    public function classrooms()
+    public function classrooms(): BelongsToMany
     {
         return $this->belongsToMany(Schoolclass::class)->withTimestamps();
     }
+
+    /**
+     * Look for any relation to user. In case of student look in classrooms
+     * and parents for a relation. In case of parent look for children and
+     * their classrooms for relation.
+     *
+     * @param int $studentId
+     * @return bool
+     */
+    public function isRelatedToStudent(int $studentId): bool
+    {
+        return ($this->hasRole('ROLE_STUDENT') && $this->studentRelated($studentId)) ||
+            ($this->hasRole('ROLE_PARENT') && $this->parentRelated($studentId));
+    }
+
+    private function parentRelated(int $id): bool
+    {
+        $child = $this->children()->find($id);
+        if (isset($child)) {
+            return true;
+        } else {
+            foreach ($this->children()->get() as $child) {
+                foreach ($child->classrooms()->get() as $classroom) {
+                    $student = $classroom->students()->find($id);
+
+                    if (isset($student)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    private function studentRelated(int $id)
+    {
+        foreach ($this->classrooms()->get() as $classroom) {
+            $student = $classroom->students()->find($id);
+            if (isset($student)) {
+                return true;
+            }
+        }
+        $parent = $this->parents()->find($id);
+        if (isset($parent)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Retrieve the roles of the user
      *

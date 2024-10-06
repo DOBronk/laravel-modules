@@ -27,7 +27,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN')->group(function () {
+    Route::middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN,ROLE_PARENT')->group(function () {
         Route::get('/students', [ControllerUser::class, 'list_students'])->name('students.list');
         Route::get('/students/{id}', [ControllerUser::class, 'show_student'])->name('student.show');
         Route::get('/classes/show', [ControllerSchoolclass::class, 'index_show'])->name('class.show');

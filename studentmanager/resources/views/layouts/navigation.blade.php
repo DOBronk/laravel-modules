@@ -1,6 +1,7 @@
 <div x-init="Echo.private('messages.{{ Auth::user()->id }}')
     .listen('MessageSent', (event) => {
-        document.getElementById('unread-messages').innerHTML = Number(document.getElementById('unread-messages').innerHTML) + 1;
+        document.getElementById('unread-messages-1').innerHTML = Number(document.getElementById('unread-messages-1').innerHTML) + 1;
+        document.getElementById('unread-messages').innerHTML = document.getElementById('unread-messages-1').innerHTML;
     })">
 </div>
 
@@ -23,13 +24,9 @@
                         <x-nav-link :href="route('students.list')" :active="request()->routeIs('students.list')">
                             {{ __('Students') }}
                         </x-nav-link>
-                    @endif
-                    @if (Auth::user()->hasAnyRole(['ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN']))
                         <x-nav-link :href="route('mentors.list')" :active="request()->routeIs('mentors.list')">
                             {{ __('Mentors') }}
                         </x-nav-link>
-                    @endif
-                    @if (Auth::user()->hasAnyRole(['ROLE_STUDENT', 'ROLE_MENTOR', 'ROLE_ADMIN']))
                         <x-nav-link :href="route('classes.list')" :active="request()->routeIs('classes.list')">
                             {{ __('Classes') }}
                         </x-nav-link>
@@ -78,7 +75,8 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('messages.list')">
-                            {{ __('Message Inbox') }} ({{ Auth::user()->unread_messages() }})
+                            {{ __('Message Inbox') }} (<strong
+                                id='unread-messages-1'>{{ Auth::user()->unread_messages() }}</strong>)
                         </x-dropdown-link>
 
                         <x-dropdown-link :href="route('profile.edit')">
