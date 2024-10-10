@@ -31,7 +31,7 @@
                             {{ __('Classes') }}
                         </h2>
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            @foreach ($classes as $class)
+                            @foreach ($studentclasses as $class)
                                 {{ __('Name') }}: {{ $class->name }} {{ __('Year') }} {{ $class->year }}
                                 {{ __('Mentor') }}
                                 {{ $class->mentor()->name }}
@@ -50,7 +50,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if ($user->hasRole('ROLE_MENTOR'))
                         U bent mentor van de volgende klas(sen):<br><br>
-                        @forelse ($user->mentorOf()->get() as $class)
+                        @forelse ($mentorclasses as $class)
                             {{ __('Name') }}: {{ $class->name }} {{ __('Year') }} {{ $class->year }}
                             {{ __('Mentor') }}
                             {{ $class->mentor()->name }}
@@ -64,9 +64,9 @@
 
                     @if ($user->hasRole('ROLE_PARENT'))
                         U bent ouder van de volgende kind(eren):<br><br>
-                        @forelse ($user->children()->get() as $class)
-                            {{ __('Name') }}: {{ $class->name }}
-                            <x-nav-link :href="route('student.show', $class->id)">{{ __('Show student') }}</x-nav-link>
+                        @forelse ($children as $student)
+                            {{ __('Name') }}: {{ $student->name }}
+                            <x-nav-link :href="route('student.show', $student->id)">{{ __('Show student') }}</x-nav-link>
                             <br>
                         @empty
                             U bent momenteel geen ouder van een kind.<br>

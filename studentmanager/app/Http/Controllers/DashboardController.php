@@ -19,7 +19,9 @@ class DashboardController extends Controller
         return view('dashboard', [
             'user' => $request->user(),
             'roles' => $displayRoles,
-            'classes' => $request->user()->classrooms()->get()
+            'studentclasses' => $request->user()->classrooms()->get(),
+            'mentorclasses' => $request->user()->mentorOf()->get(),
+            'children' => $request->user()->children()->get(),
         ]);
     }
 }
