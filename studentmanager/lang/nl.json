@@ -1,4 +1,8 @@
 {
+    "ROLE_ADMIN": "Administrator",
+    "ROLE_STUDENT": "Student",
+    "ROLE_PARENT": "Ouder",
+    "ROLE_MENTOR": "Mentor",
     "Name": "Naam",
     "Year": "Jaar",
     "Date of birth": "Geboortedatum",

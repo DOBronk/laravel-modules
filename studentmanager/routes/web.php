@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ControllerUser;
 use App\Http\Controllers\ControllerSchoolclass;
 use App\Http\Controllers\ControllerAdmin;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessagesController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Middleware\CheckRole;
@@ -50,9 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         App::setLocale($lang);
         return back();
     });
-    Route::get('/dashboard', function (Request $request) {
-        return view('dashboard', ['user' => $request->user()]);
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 });
 
 require __DIR__ . '/auth.php';

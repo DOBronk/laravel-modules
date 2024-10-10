@@ -18,7 +18,7 @@
                                 <td style="text-align:left">{{ __('Phone') }}</td>
 
                                 @foreach ($roles as $role)
-                                    <td> {{ ucfirst(strtolower(explode('_', $role->name)[1])) }}</td>
+                                    <td> {{ __($role->name) }}</td>
                                 @endforeach
                             </tr>
                             @foreach ($users as $user)
@@ -29,7 +29,6 @@
                                     <td>{{ $user->phone }}</td>
                                     @foreach ($roles as $role)
                                         <td>
-
                                             @if (!$user->hasRole($role->name))
                                                 <x-text-input type="checkbox" value="{{ $role->id }}"
                                                     name="roles[roles-{{ $user->id }}][]" />
@@ -39,13 +38,11 @@
                                             @endif
                                         </td>
                                     @endforeach
-                                    <!-- $user->roles()->attach(1) -->
                                 </tr>
                             @endforeach
                         </table>
                         <br>
                         <x-primary-button>{{ __('Save changes') }}</x-primary-button>
-
                     </div>
                 </div>
             </div>

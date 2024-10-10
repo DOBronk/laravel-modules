@@ -1,0 +1,6 @@
+{
+    "ROLE_ADMIN": "Administrator",
+    "ROLE_STUDENT": "Student",
+    "ROLE_PARENT": "Parent",
+    "ROLE_MENTOR": "Mentor"
+}
