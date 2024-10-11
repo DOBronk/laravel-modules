@@ -15,7 +15,6 @@
                             <td colspan="5"> {{ __('Students') }}: </td>
                         </tr>
                         <tr>
-
                             @forelse ($class->students()->get() as $student)
                         <tr>
                             <td> {{ __('Name') }}: {{ $student->name }} </td>
