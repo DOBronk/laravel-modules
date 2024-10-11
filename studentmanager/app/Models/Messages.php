@@ -19,7 +19,7 @@ class Messages extends Model
     ];
     public function from_user()
     {
-        return $this->belongsTo(User::class, 'from_user_id')->get()->first();
+        return $this->belongsTo(User::class, 'from_user_id');
     }
 
     /**

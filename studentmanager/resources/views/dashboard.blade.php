@@ -53,7 +53,7 @@
                         @forelse ($mentorclasses as $class)
                             {{ __('Name') }}: {{ $class->name }} {{ __('Year') }} {{ $class->year }}
                             {{ __('Mentor') }}
-                            {{ $class->mentor()->name }}
+                            {{ $class->mentor->name }}
                             <x-nav-link :href="route('class', $class->id)" name="id">{{ __('Show class') }}</x-nav-link>
                             <br>
                         @empty

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Class') }}: {{ $class->name }} {{ __('Schoolyear') }}: {{ $class->year }} {{ __('Mentor') }}:
-            {{ $class->mentor()->name }}
+            {{ $class->mentor->name }}
         </h2>
     </x-slot>
 
@@ -15,7 +15,7 @@
                             <td colspan="5"> {{ __('Students') }}: </td>
                         </tr>
                         <tr>
-                            @forelse ($class->students()->get() as $student)
+                            @forelse ($class->students as $student)
                         <tr>
                             <td> {{ __('Name') }}: {{ $student->name }} </td>
                         </tr>

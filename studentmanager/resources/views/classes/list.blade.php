@@ -14,14 +14,14 @@
                         {{ __('Schoolclass') }}: {{ $class->name }}
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                             {{ __('Schoolyear') }}: {{ $class->year }} {{ __('Mentor') }}:
-                            {{ $class->mentor()->name }}
+                            {{ $class->mentor->name }}
                         </p>
                         <br>
                         <table>
                             <tr>
                                 <td colspan=3> {{ __('Students') }}: </td>
                             </tr>
-                            @forelse ($class->students()->get() as $student)
+                            @forelse ($class->students as $student)
                                 <tr>
                                     <td colspan=3> {{ $student->name }} </td>
                                 </tr>

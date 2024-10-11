@@ -20,7 +20,7 @@ class Schoolclass extends Model
      */
     public function mentor()
     {
-        return $this->hasOne(User::class, 'id', 'mentor_id')->first();
+        return $this->hasOne(User::class, 'id', 'mentor_id');
     }
 
     public function students(): BelongsToMany|Collection

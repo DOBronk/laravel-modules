@@ -72,23 +72,25 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Retrieve any classrooms where this user is the mentor
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
     public function mentorOf()
     {
-        return $this->belongsToMany(Schoolclass::class, 'mentor_user', 'mentor_id', 'classroom_id');
+        return $this->hasMany(Schoolclass::class, 'mentor_id');
     }
     /**
      * Retrieve all mentors attached to this user
      *
      * @return array
      */
-    public function mentors(): array
+    public function mentors()
     {
+        //    return $this->hasManyThrough(Schoolclass::class, User::class);
+
         $mentors = [];
         foreach ($this->classrooms()->get() as $class) {
-            if (!in_array($class->mentor(), $mentors)) {
-                array_push($mentors, $class->mentor());
+            if (!in_array($class->mentor, $mentors)) {
+                array_push($mentors, $class->mentor);
             }
         }
         return $mentors;

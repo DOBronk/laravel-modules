@@ -10,7 +10,7 @@ class ControllerUser extends Controller
 {
     public function list_students(Request $request)
     {
-        $students = Roles::where('name', 'ROLE_STUDENT')->get()->first()->users()->get();
+        $students = Roles::where('name', 'ROLE_STUDENT')->first()->users()->get();
 
         return view("students.list", [
             'students' => $students,
@@ -18,7 +18,8 @@ class ControllerUser extends Controller
     }
     public function list_mentors(Request $request)
     {
-        $mentors = Roles::where('name', 'ROLE_MENTOR')->get()->first()->users()->get();
+        $mentors = Roles::where('name', 'ROLE_MENTOR')->first()->users()->get();
+
         return view("mentors.list", [
             'mentors' => $mentors,
         ]);
@@ -26,7 +27,8 @@ class ControllerUser extends Controller
 
     public function list_parents(Request $request)
     {
-        $parents = Roles::where('name', 'ROLE_PARENT')->get()->first()->users()->get();
+        $parents = Roles::where('name', 'ROLE_PARENT')->first()->users()->get();
+
         return view("parents.list", [
             'parents' => $parents,
         ]);
@@ -34,20 +36,32 @@ class ControllerUser extends Controller
 
     public function show_parent(Request $request)
     {
+        $parent = User::find($request->id);
+
+        if (!isset($parent)) {
+            abort(404, 'Parent not found');
+        }
+
         return view("parents.show", [
-            'parent' => User::where('id', $request->id)->first(),
+            'parent' => $parent,
         ]);
     }
 
     public function show_student(Request $request, $id)
     {
-        // First check if the user is allowed to view this students details
+        $student = User::find($id);
+
+        if (!isset($student)) {
+            abort(404, 'Student not found');
+        }
+
+        // Check if the user is allowed to view this students details
         if (!$request->user()->hasAnyRole(['ROLE_ADMIN', 'ROLE_MENTOR']) && !$request->user()->isRelatedToStudent($id)) {
             abort(401, "Unauthorized");
         }
 
         return view("students.show", [
-            'student' => User::where('id', $request->id)->first(),
+            'student' => $student,
         ]);
     }
 }

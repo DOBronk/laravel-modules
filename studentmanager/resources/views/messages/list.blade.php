@@ -45,7 +45,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    {{ $message->from_user()->name }}
+                                    {{ $message->from_user->name }}
                                 </td>
                                 <td>
                                     {{ $message->crop_message(50) }}
@@ -54,7 +54,7 @@
                                     {{ $message->created_at }}
                                 </td>
                                 <td>
-                                    <x-nav-link :href="route('messages.create') . '?to-user=' . $message->from_user()->id">{{ __('Reply') }}</x-nav-link>
+                                    <x-nav-link :href="route('messages.create') . '?to-user=' . $message->from_user->id">{{ __('Reply') }}</x-nav-link>
                                 </td>
                             </tr>
                         @endforeach
