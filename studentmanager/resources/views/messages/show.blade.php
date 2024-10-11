@@ -13,7 +13,7 @@
                     {{ __('Date') }}: {{ $message->created_at }}<br><br>
                     {{ __('Message') }}: <br>
                     <p style="white-space: pre-wrap">{{ $message->message }}</p> <br><br>
-                    <x-nav-link :href="route('messages.list')">{{ __('Return to inbox') }}</x-nav-link>
+                    <x-nav-link :href="route('messages.index')">{{ __('Return to inbox') }}</x-nav-link>
                 </div>
             </div>
         </div>

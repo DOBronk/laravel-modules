@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Messages;
+use App\Models\User;
 use App\Events\MessageSent;
+use App\Http\Requests\StoreMessageRequest;
 
 class MessagesController extends Controller
 {
@@ -15,21 +17,33 @@ class MessagesController extends Controller
     {
         $messages = $request->user()->messages()->get();
         $unread = count($messages->where('read', 0));
+        $sent = $request->input('sent');
 
         return view('messages.list', [
             'messages' => $messages,
             'unread' => $unread,
+            'sent' => (int) isset($sent),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $message = Messages::find(1);
+        $to_user = $request->input('to-user');
 
-        MessageSent::dispatch($message);
+        if (!isset($to_user)) {
+            abort(500, 'Missing user');
+        }
+        $user = User::find($to_user);
+        if (!isset($user)) {
+            abort(500, 'User not found');
+        }
+
+        return view('messages.create', [
+            'to_user' => $user,
+        ]);
     }
 
     /**
@@ -37,9 +51,19 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
-        $message = Messages::find(1);
+        $message = new Messages();
+        $vars = $request->post();
 
+        $message->subject = $vars['subject'];
+        $message->message = $vars['message'];
+        $message->user_id = $vars['to_user_id'];
+        $message->from_user_id = $request->user()->id;
+        $message->read = 0;
+
+        $message->save();
         MessageSent::dispatch($message);
+
+        return redirect(route('messages.index', absolute: false) . "?sent=1");
     }
 
     /**

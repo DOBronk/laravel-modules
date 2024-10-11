@@ -12,8 +12,29 @@ class Messages extends Model
 
     protected $table = 'messages';
 
-    public function from_user(): BelongsTo
+    protected $fillable = [
+        'subject',
+        'message',
+        'to-user',
+    ];
+    public function from_user()
     {
-        return $this->belongsTo(User::class, 'from_user_id');
+        return $this->belongsTo(User::class, 'from_user_id')->get()->first();
+    }
+
+    /**
+     * Crop message for preview in list
+     * @param int $length Maximum length of message
+     * @return string
+     */
+    public function crop_message(int $length): string
+    {
+        $message = $this->message;
+
+        if (strlen($message) > $length) {
+            $message = substr($message, 0, $length - 3) . "...";
+        }
+
+        return $message;
     }
 }

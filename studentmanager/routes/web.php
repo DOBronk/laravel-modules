@@ -52,7 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'edit'
     ]);
 
-    Route::get('/message', [MessagesController::class, 'create'])->name('messages.create');
+    Route::get('/message', [MessagesController::class, 'create'])->name('messages.test');
 
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
