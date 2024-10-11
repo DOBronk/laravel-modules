@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Mail\NewMessageReceived;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class SendMessageNotification implements ShouldQueue
@@ -24,6 +25,8 @@ class SendMessageNotification implements ShouldQueue
      */
     public function handle(MessageSent $event): void
     {
-        Mail::to(User::find($event->message->user_id))->send(new NewMessageReceived($event->message));
+        $user = User::find($event->message->user_id);
+        Mail::to($user)->send(new NewMessageReceived($event->message));
+        Log::info('Mail sent', $user->toArray());
     }
 }

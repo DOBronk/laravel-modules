@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Roles;
 
-class ControllerAdmin extends Controller
+class AdminController extends Controller
 {
-    public function index(Request $request)
+    public function show(Request $request)
     {
         $users = User::all();
         $roles = Roles::all();

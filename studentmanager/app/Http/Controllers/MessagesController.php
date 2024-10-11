@@ -8,7 +8,10 @@ use App\Events\MessageSent;
 
 class MessagesController extends Controller
 {
-    public function list_messages(Request $request)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
         $messages = $request->user()->messages()->get();
         $unread = count($messages->where('read', 0));
@@ -18,7 +21,31 @@ class MessagesController extends Controller
             'unread' => $unread,
         ]);
     }
-    public function show_message(Request $request, $id)
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $message = Messages::find(1);
+
+        MessageSent::dispatch($message);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $message = Messages::find(1);
+
+        MessageSent::dispatch($message);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
         $message = Messages::where('id', $id)->get()->first();
 
@@ -27,10 +54,11 @@ class MessagesController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
-        $message = Messages::find(1);
-
-        MessageSent::dispatch($message);
+        //
     }
 }

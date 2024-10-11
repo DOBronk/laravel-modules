@@ -74,7 +74,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('messages.list')">
+                        <x-dropdown-link :href="route('messages.index')">
                             {{ __('Message Inbox') }} (<strong
                                 id='unread-messages-1'>{{ Auth::user()->unread_messages() }}</strong>)
                         </x-dropdown-link>
