@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\ForeignKeyDefinition;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -12,8 +13,8 @@ return new class extends Migration {
     {
         Schema::create('parent_user', function (Blueprint $table) {
             $table->id();
-            $table->integer('parent_id')->references('id')->on('users');
-            $table->integer('user_id')->references('id')->on('users');
+            $table->foreignId('parent_id')->constrained(table: 'users');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

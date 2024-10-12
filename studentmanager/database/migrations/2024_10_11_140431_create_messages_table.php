@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('from_user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('from_user_id')->constrained(table: 'users');
             $table->string('subject');
             $table->boolean('read');
             $table->text('message');

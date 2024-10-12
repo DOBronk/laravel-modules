@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('schoolclass_user', function (Blueprint $table) {
+        Schema::create('classroom_user', function (Blueprint $table) {
             $table->id();
-            $table->integer('schoolclass_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->foreignId('classroom_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('schoolclass_user');
+        Schema::dropIfExists('classroom_user');
     }
 };

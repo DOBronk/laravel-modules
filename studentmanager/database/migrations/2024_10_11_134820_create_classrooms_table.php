@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->text('name');
             $table->integer('year');
-            $table->foreign('mentor_id')->references('id')->on('users');
+            $table->foreignId('mentor_id')->constrained(table: 'users');
             $table->timestamps();
         });
     }
