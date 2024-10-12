@@ -25,8 +25,9 @@
                             <tr>
                                 <td>Message</td>
                             </tr>
-                            <tr rowspan=2>
-                                <td colspan=2><x-text-input name="message" class="block mt-1 w-full" type="text" />
+                            <tr>
+                                <td colspan=2><x-text-input name="message" class="block mt-1 w-full" type="text"
+                                        style="height: 250px;" />
                                 </td>
                             </tr>
                             <tr>

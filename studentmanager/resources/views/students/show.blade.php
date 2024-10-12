@@ -13,7 +13,7 @@
                     {{ __('Name') }}: {{ $student->name }} <br>
                     {{ __('Date of birth') }}: {{ \Carbon\Carbon::parse($student->dob)->format('d-m-Y') }}<br><br>
                     {{ __('Parents') }}: <br>
-                    @forelse($student->parents()->get() as $parent)
+                    @forelse($student->parents as $parent)
                         {{ $parent->name }} <br>
                     @empty
                         {{ __('No parents found') }} <br>

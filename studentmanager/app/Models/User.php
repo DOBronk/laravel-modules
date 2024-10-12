@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
@@ -79,21 +80,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Classroom::class, 'mentor_id');
     }
     /**
-     * Retrieve all mentors attached to this user
-     *
-     * @return array
+     *  Retrieve all mentors attached to this user
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function mentors()
+    public function mentors(): HasMany
     {
-        //    return $this->hasManyThrough(Classroom::class, User::class);
+        $instance = new ClassroomUser();
 
-        $mentors = [];
-        foreach ($this->classrooms()->get() as $class) {
-            if (!in_array($class->mentor, $mentors)) {
-                array_push($mentors, $class->mentor);
-            }
-        }
-        return $mentors;
+        return $this->newHasMany($instance->newQuery()->selectRaw("classroom_user.*, users.*")
+            ->from('classroom_user')
+            ->join('classrooms', 'classroom_user.classroom_id', '=', 'classrooms.id')
+            ->join('users', 'users.id', '=', 'classrooms.mentor_id'), $this, 'user_id', $this->getKeyName());
     }
 
     /**
@@ -171,6 +169,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return false;
     }
+
 
     /**
      * Retrieve the roles of the user
