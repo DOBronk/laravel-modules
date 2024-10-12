@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Classroom;
 use App\Models\Roles;
+use App\Models\Messages;
 
 use Illuminate\Support\Facades\Hash;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,8 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Create user roles
         $sid = Roles::create([
             'name' => 'ROLE_STUDENT',
             'description' => 'Student',
@@ -36,61 +36,193 @@ class DatabaseSeeder extends Seeder
             'description' => 'Administrator',
         ]);
 
+        // Create users
         $admin = User::create([
-            'name' => 'Dennis Administrator',
+            'name' => 'Dennis Admin',
             'email' => 'test@bronk.nl',
             'dob' => '1989/12/1',
             'phone' => '0687654321',
+            'email_verified_at' => now(),
             'password' => Hash::make('wachtwoord')
         ]);
 
-        $student0 = User::create([
-            'name' => 'Test Student',
-            'email' => 'student@bronk.nl',
+        $studentA = User::create([
+            'name' => 'Alpha Student',
+            'email' => 'studenta@bronk.nl',
             'dob' => '1989/12/01',
             'phone' => '06876543231',
+            'email_verified_at' => now(),
             'password' => Hash::make('wachtwoord')
         ]);
 
-        $student1 = User::create([
-            'name' => 'Andere Student',
-            'email' => 'anders@bronk.nl',
+        $studentB = User::create([
+            'name' => 'Beta Student',
+            'email' => 'studentb@bronk.nl',
             'dob' => '1989/12/01',
             'phone' => '06876543231',
+            'email_verified_at' => now(),
             'password' => Hash::make('wachtwoord')
         ]);
 
-        $mentor = User::create([
-            'name' => 'Test Mentor',
-            'email' => 'mentor@bronk.nl',
+        $studentC = User::create([
+            'name' => 'Charlie Student',
+            'email' => 'studentc@bronk.nl',
             'dob' => '1989/12/01',
             'phone' => '06876543231',
+            'email_verified_at' => now(),
             'password' => Hash::make('wachtwoord')
         ]);
 
-        $parent = User::create([
-            'name' => 'Test Ouder',
-            'email' => 'ouder@bronk.nl',
+        $studentD = User::create([
+            'name' => 'Delta Student',
+            'email' => 'studentd@bronk.nl',
             'dob' => '1989/12/01',
             'phone' => '06876543231',
+            'email_verified_at' => now(),
             'password' => Hash::make('wachtwoord')
         ]);
 
-        $class = Classroom::create([
+        $studentE = User::create([
+            'name' => 'Echo Student',
+            'email' => 'studente@bronk.nl',
+            'dob' => '1989/12/01',
+            'phone' => '06876543231',
+            'email_verified_at' => now(),
+            'password' => Hash::make('wachtwoord')
+        ]);
+
+        $mentorA = User::create([
+            'name' => 'Alpha Mentor',
+            'email' => 'mentora@bronk.nl',
+            'dob' => '1989/12/01',
+            'phone' => '06876543231',
+            'email_verified_at' => now(),
+            'password' => Hash::make('wachtwoord')
+        ]);
+
+        $mentorB = User::create([
+            'name' => 'Beta Mentor',
+            'email' => 'mentorb@bronk.nl',
+            'dob' => '1989/12/01',
+            'phone' => '06876543231',
+            'email_verified_at' => now(),
+            'password' => Hash::make('wachtwoord')
+        ]);
+
+        $parentAX = User::create([
+            'name' => 'Alpha X-Ray',
+            'email' => 'ouderax@bronk.nl',
+            'dob' => '1989/12/01',
+            'phone' => '06876543231',
+            'email_verified_at' => now(),
+            'password' => Hash::make('wachtwoord')
+        ]);
+
+        $parentBX = User::create([
+            'name' => 'Beta X-Ray',
+            'email' => 'ouderbx@bronk.nl',
+            'dob' => '1989/12/01',
+            'phone' => '06876543231',
+            'email_verified_at' => now(),
+            'password' => Hash::make('wachtwoord')
+        ]);
+
+        $parentAY = User::create([
+            'name' => 'Alpha Yankee',
+            'email' => 'ouderay@bronk.nl',
+            'dob' => '1989/12/01',
+            'phone' => '06876543231',
+            'email_verified_at' => now(),
+            'password' => Hash::make('wachtwoord')
+        ]);
+
+        $parentBY = User::create([
+            'name' => 'Beta Yankee',
+            'email' => 'ouderby@bronk.nl',
+            'dob' => '1989/12/01',
+            'phone' => '06876543231',
+            'email_verified_at' => now(),
+            'password' => Hash::make('wachtwoord')
+        ]);
+
+        $parentAZ = User::create([
+            'name' => 'Alpha Zulu',
+            'email' => 'ouderaz@bronk.nl',
+            'dob' => '1989/12/01',
+            'phone' => '06876543231',
+            'email_verified_at' => now(),
+            'password' => Hash::make('wachtwoord')
+        ]);
+
+        // Create schoolclasses
+        $class1A = Classroom::create([
             'name' => '1A',
             'year' => '1',
-            'mentor_id' => $mentor->id,
+            'mentor_id' => $mentorB->id,
         ]);
 
-        $admin->roles()->sync($adid);
-        //   $admin->mentors()->attach($class);
-        //   $admin->parents()->attach($parent);
-        $student0->roles()->sync($sid);
-        $student1->roles()->sync($sid);
-        $mentor->roles()->sync($mid);
-        $parent->roles()->sync($pid);
-        $students = $class->students();
-        $students->attach($student1);
-        $students->attach($student0);
+        $class1B = Classroom::create([
+            'name' => '1B',
+            'year' => '1',
+            'mentor_id' => $admin->id,
+        ]);
+
+        $class2A = Classroom::create([
+            'name' => '2A',
+            'year' => '2',
+            'mentor_id' => $mentorA->id,
+        ]);
+
+        // Generate a welcome message for every user
+        $users = User::all();
+
+        foreach ($users as $user) {
+            Messages::create([
+                'user_id' => $user->id,
+                'from_user_id' => $admin->id,
+                'read' => 0,
+                'subject' => 'Welkom',
+                'message' => "Hallo $user->name,\n\nWelkom op het studentmanager platform!\n\nMet vriendelijke groet,\n$admin->name",
+            ]);
+        }
+
+        // Attach roles to users
+        $admin->roles()->attach($adid);
+        $admin->roles()->attach($mid);
+
+        $studentA->roles()->sync($sid);
+        $studentB->roles()->sync($sid);
+        $studentC->roles()->sync($sid);
+        $studentD->roles()->sync($sid);
+        $studentE->roles()->sync($sid);
+
+        $mentorA->roles()->sync($mid);
+        $mentorB->roles()->sync($mid);
+
+        $parentAX->roles()->sync($pid);
+        $parentBX->roles()->sync($pid);
+        $parentAY->roles()->sync($pid);
+        $parentBY->roles()->sync($pid);
+        $parentAZ->roles()->sync($pid);
+
+        // Attach student users to parent users
+        $parentAX->children()->attach($studentA);
+        $parentAX->children()->attach($studentB);
+        $parentBX->children()->attach($studentA);
+        $parentBX->children()->attach($studentB);
+
+        $parentAY->children()->attach($studentD);
+        $parentAY->children()->attach($studentE);
+        $parentBY->children()->attach($studentD);
+        $parentBY->children()->attach($studentE);
+
+        $parentAZ->children()->attach($studentC);
+
+        // Attach students to schoolclasses
+        $class1A->students()->attach($studentA);
+        $class1A->students()->attach($studentB);
+        $class1B->students()->attach($studentC);
+        $class2A->students()->attach($studentD);
+        $class2A->students()->attach($studentE);
     }
 }
