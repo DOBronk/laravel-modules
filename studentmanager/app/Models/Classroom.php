@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 
 class Classroom extends Model
@@ -15,21 +16,23 @@ class Classroom extends Model
     protected $table = 'classrooms';
 
     /**
-     * Returns the mentor associated with this classroom
-     * @return User|null
+     * Returns the mentor associated with this schoolclass
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function mentor()
+    public function mentor(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'mentor_id');
     }
 
-    public function students(): BelongsToMany|Collection
+    /**
+     * Return students attached to this schoolclass
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function students(): BelongsToMany
     {
-        $ret = $this->belongsToMany(User::class)->withTimestamps();
-        if ($ret) {
-            return $ret;
-        }
-        return collect([]);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 
 }
