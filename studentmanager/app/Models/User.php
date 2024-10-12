@@ -132,8 +132,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isRelatedToStudent(int $studentId): bool
     {
-        return ($this->hasRole('ROLE_STUDENT') && $this->studentRelated($studentId)) ||
-            ($this->hasRole('ROLE_PARENT') && $this->parentRelated($studentId));
+        return ($this->hasAnyRole('ROLE_STUDENT') && $this->studentRelated($studentId)) ||
+            ($this->hasAnyRole('ROLE_PARENT') && $this->parentRelated($studentId));
     }
 
     private function parentRelated(int $id): bool
@@ -177,19 +177,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Role::class)->withTimestamps(); // PIVOT
     }
 
-    public function hasRole(string $role): bool
+    public function hasAnyRole(string|array $roles): bool
     {
-        return $this->roles()->where('name', $role)->exists();
-    }
-
-    public function hasAnyRole(array $roles): bool
-    {
-        foreach ($roles as $role) {
-            if ($this->hasRole($role)) {
-                return true;
-            }
+        if (is_array($roles)) {
+            return $this->roles()->whereIn('name', $roles)->exists();
         }
-        return false;
+
+        return $this->roles()->where('name', $roles)->exists();
     }
 
 }

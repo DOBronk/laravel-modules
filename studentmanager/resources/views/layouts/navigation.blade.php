@@ -36,7 +36,7 @@
                             {{ __('Parents') }}
                         </x-nav-link>
                     @endif
-                    @if (Auth::user()->hasRole('ROLE_ADMIN'))
+                    @if (Auth::user()->hasAnyRole('ROLE_ADMIN'))
                         <x-nav-link :href="route('admin.users.list')" :active="request()->routeIs('admin.users.list')">
                             {{ __('Admin') }}
                         </x-nav-link>

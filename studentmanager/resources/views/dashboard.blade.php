@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    @if ($user->hasRole('ROLE_STUDENT') && isset($studentclasses))
+    @if ($user->hasAnyRole('ROLE_STUDENT') && isset($studentclasses))
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -48,7 +48,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if ($user->hasRole('ROLE_MENTOR'))
+                    @if ($user->hasAnyRole('ROLE_MENTOR'))
                         U bent mentor van de volgende klas(sen):<br><br>
                         @forelse ($mentorclasses as $class)
                             {{ __('Name') }}: {{ $class->name }} {{ __('Year') }} {{ $class->year }}
@@ -62,7 +62,7 @@
                         <br>
                     @endif
 
-                    @if ($user->hasRole('ROLE_PARENT'))
+                    @if ($user->hasAnyRole('ROLE_PARENT'))
                         U bent ouder van de volgende kind(eren):<br><br>
                         @forelse ($children as $student)
                             {{ __('Name') }}: {{ $student->name }}

@@ -29,7 +29,7 @@
                                     <td>{{ $user->phone }}</td>
                                     @foreach ($roles as $role)
                                         <td>
-                                            @if (!$user->hasRole($role->name))
+                                            @if (!$user->hasAnyRole($role->name))
                                                 <x-text-input type="checkbox" value="{{ $role->id }}"
                                                     name="roles[roles-{{ $user->id }}][]" />
                                             @else
