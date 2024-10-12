@@ -109,7 +109,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function unread_messages(): int
     {
-        return count($this->messages()->get()->where('read', 0));
+        return $this->messages()->where('read', 0)->count();
     }
 
     /**
@@ -119,7 +119,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function classrooms(): BelongsToMany
     {
-        return $this->belongsToMany(Classroom::class)->withTimestamps();
+        return $this->belongsToMany(Classroom::class);
     }
 
     /**
@@ -138,38 +138,34 @@ class User extends Authenticatable implements MustVerifyEmail
 
     private function parentRelated(int $id): bool
     {
-        $child = $this->children()->find($id);
-        if (isset($child)) {
+        if ($this->children()->find($id)) {
             return true;
         } else {
-            foreach ($this->children()->get() as $child) {
-                foreach ($child->classrooms()->get() as $classroom) {
-                    $student = $classroom->students()->find($id);
-
-                    if (isset($student)) {
+            foreach ($this->children as $child) {
+                foreach ($child->classrooms as $classroom) {
+                    if ($classroom->students()->find($id)) {
                         return true;
                     }
                 }
             }
         }
+
         return false;
     }
     private function studentRelated(int $id)
     {
-        foreach ($this->classrooms()->get() as $classroom) {
-            $student = $classroom->students()->find($id);
-            if (isset($student)) {
+        foreach ($this->classrooms as $classroom) {
+            if ($classroom->students()->find($id)) {
                 return true;
             }
         }
-        $parent = $this->parents()->find($id);
-        if (isset($parent)) {
+
+        if ($this->parents()->find($id)) {
             return true;
         }
 
         return false;
     }
-
 
     /**
      * Retrieve the roles of the user
@@ -183,23 +179,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function hasRole(string $role): bool
     {
-        if ($this->roles()->where('name', $role)->first()) {
-            return true;
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function hasAnyRole(array $roles): bool
+    {
+        foreach ($roles as $role) {
+            if ($this->hasRole($role)) {
+                return true;
+            }
         }
         return false;
-    }
-    public function hasAnyRole(string|array $roles): bool
-    {
-        if (is_array($roles)) {
-            foreach ($roles as $role) {
-                if ($this->hasRole($role)) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            return $this->hasRole($roles);
-        }
     }
 
 }

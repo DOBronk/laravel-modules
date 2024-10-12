@@ -19,6 +19,8 @@ class GlobalLocalization
     {
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
+        } else {
+            Session::put('locale', env('APP_LOCALE', 'en'));
         }
 
         return $next($request);

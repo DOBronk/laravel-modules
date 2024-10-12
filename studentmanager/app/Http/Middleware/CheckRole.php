@@ -15,12 +15,10 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        foreach ($roles as $role) {
-
-            if ($request->user()->hasAnyRole($role)) {
-                return $next($request);
-            }
+        if ($request->user()->hasAnyRole($roles)) {
+            return $next($request);
         }
+
         abort(401, 'Not authorized');
     }
 

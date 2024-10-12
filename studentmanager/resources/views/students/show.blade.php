@@ -19,7 +19,7 @@
                         {{ __('No parents found') }} <br>
                     @endforelse
                     <br>{{ __('Mentors') }}: <br>
-                    @forelse($student->mentors() as $mentor)
+                    @forelse($student->mentors as $mentor)
                         {{ $mentor->name }} <br>
                     @empty
                         {{ __('No mentors found') }} <br>

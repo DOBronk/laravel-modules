@@ -7,7 +7,6 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if (!strlen($roles))
@@ -22,7 +21,8 @@
             </div>
         </div>
     </div>
-    @if ($user->hasRole('ROLE_STUDENT') && isset($classes))
+
+    @if ($user->hasRole('ROLE_STUDENT') && isset($studentclasses))
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -34,7 +34,7 @@
                             @foreach ($studentclasses as $class)
                                 {{ __('Name') }}: {{ $class->name }} {{ __('Year') }} {{ $class->year }}
                                 {{ __('Mentor') }}
-                                {{ $class->mentor()->name }}
+                                {{ $class->mentor->name }}
                                 <x-nav-link :href="route('class', $class->id)" name="id">{{ __('Show class') }}</x-nav-link>
                                 <br>
                             @endforeach
