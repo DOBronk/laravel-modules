@@ -76,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function mentorOf()
     {
-        return $this->hasMany(Schoolclass::class, 'mentor_id');
+        return $this->hasMany(Classroom::class, 'mentor_id');
     }
     /**
      * Retrieve all mentors attached to this user
@@ -85,7 +85,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function mentors()
     {
-        //    return $this->hasManyThrough(Schoolclass::class, User::class);
+        //    return $this->hasManyThrough(Classroom::class, User::class);
 
         $mentors = [];
         foreach ($this->classrooms()->get() as $class) {
@@ -121,7 +121,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function classrooms(): BelongsToMany
     {
-        return $this->belongsToMany(Schoolclass::class)->withTimestamps();
+        return $this->belongsToMany(Classroom::class)->withTimestamps();
     }
 
     /**

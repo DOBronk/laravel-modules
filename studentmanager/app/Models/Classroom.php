@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 
-class Schoolclass extends Model
+class Classroom extends Model
 {
     use HasFactory;
     protected $fillable = ['id', 'name', 'year', 'mentor_id'];

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Schoolclass;
+use App\Models\Classroom;
 use App\Models\Roles;
 
 use Illuminate\Support\Facades\Hash;
@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('wachtwoord')
         ]);
 
-        $class = Schoolclass::create([
+        $class = Classroom::create([
             'name' => '1A',
             'year' => '1',
             'mentor_id' => $mentor->id,

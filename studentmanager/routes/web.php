@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ControllerUser;
-use App\Http\Controllers\ControllerSchoolclass;
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessagesController;
@@ -31,9 +31,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN,ROLE_PARENT')->group(function () {
         Route::get('/students', [ControllerUser::class, 'list_students'])->name('students.list');
         Route::get('/students/{id}', [ControllerUser::class, 'show_student'])->name('student.show');
-        Route::get('/classes/show', [ControllerSchoolclass::class, 'index_show'])->name('class.show');
-        Route::get('/classes/{id}', [ControllerSchoolclass::class, 'show'])->name('class');
-        Route::get('/classes', [ControllerSchoolclass::class, 'index'])->name('classes.list');
+        Route::get('/classes/show', [ClassroomController::class, 'index_show'])->name('class.show');
+        Route::get('/classes/{id}', [ClassroomController::class, 'show'])->name('class');
+        Route::get('/classes', [ClassroomController::class, 'index'])->name('classes.list');
         Route::get('/mentors', [ControllerUser::class, 'list_mentors'])->name('mentors.list');
     });
 

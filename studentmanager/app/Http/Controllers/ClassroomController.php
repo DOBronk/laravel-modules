@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Schoolclass;
+use App\Models\Classroom;
 use App\Models\User;
 
-class ControllerSchoolclass extends Controller
+class ClassroomController extends Controller
 {
     public function index(Request $request)
     {
-        $classes = SchoolClass::all();
+        $classes = Classroom::all();
 
         return view("classes.list", [
             'classes' => $classes,
@@ -27,7 +27,7 @@ class ControllerSchoolclass extends Controller
 
     public function show(Request $request)
     {
-        $class = Schoolclass::where('id', $request->id)->first();
+        $class = Classroom::where('id', $request->id)->first();
         return view("classes.show", ['class' => $class]);
     }
 }
