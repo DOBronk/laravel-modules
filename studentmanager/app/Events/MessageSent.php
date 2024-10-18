@@ -18,7 +18,9 @@ class MessageSent implements ShouldBroadcast
      * Create a new event instance.
      */
     public function __construct(
-        public Messages $message
+        public int $unreadMessages,
+        public int $countMessages,
+        public Messages $message,
     ) {
         //
     }

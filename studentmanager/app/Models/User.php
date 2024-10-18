@@ -52,6 +52,19 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'dob' => $this->dob,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
+
     /**
      * Retrieve any children attached to user
      *

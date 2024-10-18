@@ -12,19 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -51,6 +45,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'update',
         'edit'
     ]);
+
+    Route::get('/usersjson', function () {
+        return new UserCollection(User::all());
+    });
 
     Route::get('/message', [MessagesController::class, 'create'])->name('messages.test');
 

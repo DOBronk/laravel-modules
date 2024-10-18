@@ -27,6 +27,6 @@ class SendMessageNotification implements ShouldQueue
     {
         $user = User::find($event->message->user_id);
         Mail::to($user)->send(new NewMessageReceived($event->message));
-        Log::info('Mail sent', $user->toArray());
+        Log::info('Mail sent', [$event->message->toArray(), $user->toArray()]);
     }
 }

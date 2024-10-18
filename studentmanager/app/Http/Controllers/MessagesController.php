@@ -36,7 +36,9 @@ class MessagesController extends Controller
         if (!isset($to_user)) {
             abort(500, 'Missing user');
         }
+
         $user = User::find($to_user);
+
         if (!isset($user)) {
             abort(500, 'User not found');
         }
@@ -61,9 +63,10 @@ class MessagesController extends Controller
         $message->read = 0;
 
         $message->save();
-        MessageSent::dispatch($message);
 
-        return redirect(route('messages.index', absolute: false) . "?sent=1");
+        MessageSent::dispatch($request->user()->unread_messages(), $request->user()->messages()->count(), $message);
+
+        return redirect(route('messages.index', ['sent' => 1]));
     }
 
     /**
@@ -71,7 +74,11 @@ class MessagesController extends Controller
      */
     public function show(string $id)
     {
-        $message = Messages::where('id', $id)->get()->first();
+        $message = Messages::find($id);
+
+        if (!$message) {
+            abort(404, 'Message not found');
+        }
 
         return view('messages.show', [
             'message' => $message,
@@ -83,6 +90,14 @@ class MessagesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $message = Messages::find($id);
+
+        if (!$message) {
+            abort(404, 'Message not found');
+        }
+
+        $deleted = $message->delete();
+
+        return redirect(route('messages.index', ['deleted' => (int) $deleted]));
     }
 }

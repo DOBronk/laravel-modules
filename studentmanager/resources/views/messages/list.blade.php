@@ -1,4 +1,44 @@
 <x-app-layout>
+    <div x-init="Echo.private('messages.{{ Auth::user()->id }}')
+        .listen('MessageSent', (event) => {
+            console.log(event.message);
+            let reply = '{{ route('messages.create') }}' + '?to-user=' + event.message['from_user_id'];
+            let show = '{{ route('messages.index') }}' + '/' + event.message['id'] + '/';
+            document.getElementById('unread-messages-2').innerHTML = event.unreadMessages;
+            document.getElementById('messages').innerHTML = event.countMessages;
+            document.getElementById('messages-tbody').innerHTML += '<tr><td>Nieuw extra bericht</td></tr>';
+        })">
+    </div>
+
+    <style>
+        table {
+            border-collapse: collapse !important;
+        }
+
+        td {
+            border: 2px solid #111827 !important;
+            position: relative !important;
+        }
+
+        tr:hover,
+        tr:focus-within {
+            background: #111827 !important;
+            outline: none !important;
+        }
+
+        td>a:first-child {
+            display: flex !important;
+            padding: 18px !important;
+            text-decoration: none !important;
+            color: inherit !important;
+            z-index: 0 !important;
+
+            &:focus {
+                outline: 0 !important;
+            }
+        }
+    </style>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Message Inbox') }}
@@ -22,42 +62,38 @@
                     @endif
 
                     {{ __('Messages') }}:
-                    @php
-                        echo count($messages);
-                    @endphp
-                    ({{ $unread }} {{ __('new messages') }}) <br><br>
+                    <strong id="messages">
+                        @php
+                            echo count($messages);
+                        @endphp
+                    </strong>
+                    (<strong id="unread-messages-2">{{ $unread }}</strong> {{ __('new messages') }}) <br><br>
                     <table style="width: 90%;">
-                        <tr>
-                            <th>{{ __('Subject') }}</th>
-                            <th>{{ __('From') }}</th>
-                            <th>{{ __('Message') }}</th>
-                            <th>{{ __('Date') }}</th>
-                            <th>{{ __('Actions') }}</th>
-                        </tr>
-                        @foreach ($messages as $message)
-                            <tr>
-                                <td>
-                                    @if ($message->read == 0)
-                                        <b><x-nav-link :href="route('messages.show', $message->id)"
-                                                style="color: white; font-weight: 900">{{ $message->subject }}</x-nav-link></b>
-                                    @else
-                                        <x-nav-link :href="route('messages.show', $message->id)">{{ $message->subject }}</x-nav-link>
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ $message->from_user->name }}
-                                </td>
-                                <td>
-                                    {{ $message->crop_message(50) }}
-                                </td>
-                                <td>
-                                    {{ $message->created_at }}
-                                </td>
-                                <td>
-                                    <x-nav-link :href="route('messages.create') . '?to-user=' . $message->from_user->id">{{ __('Reply') }}</x-nav-link>
-                                </td>
-                            </tr>
-                        @endforeach
+                        <tbody id="messages-tbody">
+                            @foreach ($messages as $message)
+                                <tr>
+                                    <td>
+                                        <x-nav-link @style(['color: green !important', 'font-weight: bold !important' => !$message->read])
+                                            :href="route('messages.show', $message->id)">{{ $message->subject }}</x-nav-link>
+                                    </td>
+                                    <td>
+                                        <x-nav-link @style(['color: green !important', 'font-weight: bold !important' => !$message->read])
+                                            :href="route('messages.show', $message->id)">{{ $message->from_user->name }}</x-nav-link>
+                                    </td>
+                                    <td>
+                                        <x-nav-link @style(['color: green !important', 'font-weight: bold !important' => !$message->read])
+                                            :href="route('messages.show', $message->id)">{{ $message->crop_message(50) }}</x-nav-link>
+                                    </td>
+                                    <td>
+                                        <x-nav-link @style(['color: green !important', 'font-weight: bold !important' => !$message->read])
+                                            :href="route('messages.show', $message->id)">{{ $message->created_at }}</x-nav-link>
+                                    </td>
+                                    <td>
+                                        <x-nav-link :href="route('messages.create', ['to-user' => $message->from_user->id])">{{ __('Reply') }}</x-nav-link>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
 
                 </div>
