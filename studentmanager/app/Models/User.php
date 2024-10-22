@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Attribute;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,12 +10,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
-
+use Laravel\Sanctum\HasApiTokens;
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -100,7 +101,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function mentors(): HasMany
     {
         $instance = new ClassroomUser();
-
+        
         return $this->newHasMany($instance->newQuery()->selectRaw("classroom_user.*, users.*")
             ->from('classroom_user')
             ->join('classrooms', 'classroom_user.classroom_id', '=', 'classrooms.id')
@@ -113,7 +114,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function messages(): HasMany
     {
-        return $this->hasMany(Messages::class);
+        return $this->hasMany(Message::class);
     }
 
     /**
@@ -122,7 +123,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function unread_messages(): int
     {
-        return $this->messages()->where('read', 0)->count();
+        return $this->messages->where('read', 0)->count();
     }
 
     /**
@@ -151,12 +152,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     private function parentRelated(int $id): bool
     {
-        if ($this->children()->find($id)) {
+        if ($this->children->find($id)) {
             return true;
         } else {
             foreach ($this->children as $child) {
                 foreach ($child->classrooms as $classroom) {
-                    if ($classroom->students()->find($id)) {
+                    if ($classroom->students->find($id)) {
                         return true;
                     }
                 }
@@ -168,12 +169,12 @@ class User extends Authenticatable implements MustVerifyEmail
     private function studentRelated(int $id)
     {
         foreach ($this->classrooms as $classroom) {
-            if ($classroom->students()->find($id)) {
+            if ($classroom->students->find($id)) {
                 return true;
             }
         }
 
-        if ($this->parents()->find($id)) {
+        if ($this->parents->find($id)) {
             return true;
         }
 

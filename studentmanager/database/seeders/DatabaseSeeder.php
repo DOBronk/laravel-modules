@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Classroom;
 use App\Models\Roles;
-use App\Models\Messages;
+use App\Models\Message;
 
 use Illuminate\Support\Facades\Hash;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -177,7 +177,7 @@ class DatabaseSeeder extends Seeder
         $users = User::all();
 
         foreach ($users as $user) {
-            Messages::create([
+            Message::create([
                 'user_id' => $user->id,
                 'from_user_id' => $admin->id,
                 'read' => 0,

@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Messages;
+use App\Models\Message;
 
 class NewMessageReceived extends Mailable
 {
@@ -17,7 +17,7 @@ class NewMessageReceived extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public Messages $messager)
+    public function __construct(public Message $messager)
     {
         //
     }

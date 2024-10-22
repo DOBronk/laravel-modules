@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Messages;
+use App\Models\Message;
 class MessageSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -20,7 +20,7 @@ class MessageSent implements ShouldBroadcast
     public function __construct(
         public int $unreadMessages,
         public int $countMessages,
-        public Messages $message,
+        public Message $message,
     ) {
         //
     }

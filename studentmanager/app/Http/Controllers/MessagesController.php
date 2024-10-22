@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Messages;
+use App\Models\Message;
 use App\Models\User;
 use App\Events\MessageSent;
 use App\Http\Requests\StoreMessageRequest;
@@ -18,7 +18,7 @@ class MessagesController extends Controller
         $messages = $request->user()->messages()->get();
         $unread = count($messages->where('read', 0));
         $sent = $request->input('sent');
-
+        
         return view('messages.list', [
             'messages' => $messages,
             'unread' => $unread,
@@ -53,7 +53,7 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
-        $message = new Messages();
+        $message = new Message();
         $vars = $request->post();
 
         $message->subject = $vars['subject'];
@@ -74,7 +74,7 @@ class MessagesController extends Controller
      */
     public function show(string $id)
     {
-        $message = Messages::find($id);
+        $message = Message::find($id);
 
         if (!$message) {
             abort(404, 'Message not found');
@@ -90,7 +90,7 @@ class MessagesController extends Controller
      */
     public function destroy(string $id)
     {
-        $message = Messages::find($id);
+        $message = Message::find($id);
 
         if (!$message) {
             abort(404, 'Message not found');

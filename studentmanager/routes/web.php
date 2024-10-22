@@ -20,7 +20,16 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/user', function (Request $request) {
+    return $request->user();
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/tokens/create', function (Request $request) {
+        $token = $request->user()->createToken('test');
+
+        return ['token' => $token->plainTextToken];
+    });
 
     Route::middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN,ROLE_PARENT')->group(function () {
         Route::get('/students', [ControllerUser::class, 'list_students'])->name('students.list');

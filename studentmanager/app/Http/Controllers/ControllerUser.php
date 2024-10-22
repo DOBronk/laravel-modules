@@ -10,7 +10,7 @@ class ControllerUser extends Controller
 {
     public function list_students(Request $request)
     {
-        $students = Roles::where('name', 'ROLE_STUDENT')->first()->users()->get();
+        $students = Roles::where('name', 'ROLE_STUDENT')->first()->users();
 
         return view("students.list", [
             'students' => $students,
@@ -18,8 +18,8 @@ class ControllerUser extends Controller
     }
     public function list_mentors(Request $request)
     {
-        $mentors = Roles::where('name', 'ROLE_MENTOR')->first()->users()->get();
-
+        $mentors = Roles::where('name', 'ROLE_MENTOR')->first()->users();
+        
         return view("mentors.list", [
             'mentors' => $mentors,
         ]);
@@ -27,7 +27,7 @@ class ControllerUser extends Controller
 
     public function list_parents(Request $request)
     {
-        $parents = Roles::where('name', 'ROLE_PARENT')->first()->users()->get();
+        $parents = Roles::where('name', 'ROLE_PARENT')->first()->users();
 
         return view("parents.list", [
             'parents' => $parents,
@@ -55,7 +55,7 @@ class ControllerUser extends Controller
             abort(404, 'Student not found');
         }
 
-        // Check if the user is allowed to view this students details
+        // Check if the user is allowed to view this student's details
         if (!$request->user()->hasAnyRole(['ROLE_ADMIN', 'ROLE_MENTOR']) && !$request->user()->isRelatedToStudent($id)) {
             abort(401, "Unauthorized");
         }
