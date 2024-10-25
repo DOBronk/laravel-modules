@@ -95,13 +95,13 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     /**
      *  Retrieve all mentors attached to this user
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function mentors(): HasMany
     {
         $instance = new ClassroomUser();
-        
+
         return $this->newHasMany($instance->newQuery()->selectRaw("classroom_user.*, users.*")
             ->from('classroom_user')
             ->join('classrooms', 'classroom_user.classroom_id', '=', 'classrooms.id')

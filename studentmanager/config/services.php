@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    // Fake store API (https://app.beeceptor.com/mock-server/fake-store-api)
+    'fake_store' => [
+        'uri' => env('FAKE_STORE_URI'),
+    ],
 
 ];
