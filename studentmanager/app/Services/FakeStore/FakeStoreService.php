@@ -4,7 +4,7 @@ namespace App\Services\FakeStore;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-use App\Services\DataTransferObjects\ProductData;
+use App\Services\FakeStore\DataTransferObjects\ProductData;
 
 class FakeStoreService
 {

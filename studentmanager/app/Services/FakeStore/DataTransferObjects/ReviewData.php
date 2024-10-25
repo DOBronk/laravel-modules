@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\DataTransferObjects;
+namespace App\Services\FakeStore\DataTransferObjects;
 
 class ReviewData
 {
