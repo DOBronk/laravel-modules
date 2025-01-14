@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/codeanalyzer",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\CodeAnalyzer\\": "app/",
+            "Modules\\CodeAnalyzer\\Database\\Factories\\": "database/factories/",
+            "Modules\\CodeAnalyzer\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\CodeAnalyzer\\Tests\\": "tests/"
+        }
+    }
+}

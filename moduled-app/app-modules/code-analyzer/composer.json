@@ -1,0 +1,24 @@
+{
+	"name": "bronk/code-analyzer",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Bronk\\CodeAnalyzer\\": "src/",
+			"Bronk\\CodeAnalyzer\\Tests\\": "tests/",
+			"Bronk\\CodeAnalyzer\\Database\\Factories\\": "database/factories/",
+			"Bronk\\CodeAnalyzer\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Bronk\\CodeAnalyzer\\Providers\\CodeAnalyzerServiceProvider"
+			]
+		}
+	}
+}

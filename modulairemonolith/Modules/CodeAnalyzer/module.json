@@ -1,0 +1,11 @@
+{
+    "name": "CodeAnalyzer",
+    "alias": "codeanalyzer",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\CodeAnalyzer\\Providers\\CodeAnalyzerServiceProvider"
+    ],
+    "files": []
+}

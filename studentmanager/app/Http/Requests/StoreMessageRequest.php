@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Collection;
 
 class StoreMessageRequest extends FormRequest
 {
@@ -11,12 +12,13 @@ class StoreMessageRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
-        return [
-            'subject' => ['required', 'string'],
-            'message' => ['required', 'string'],
-            'to_user_id' => ['required', 'integer']
-        ];
-    }
+    /*  public function rules(): array
+      {
+          return [
+              'subject' => ['required', 'string'],
+              'message' => ['required', 'string'],
+              'to_user_id' => ['required', 'integer']
+          ];
+      } */
+
 }

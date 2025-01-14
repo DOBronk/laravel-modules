@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Services\FakeStore;
 use App\Services\FakeStore\FakeStoreService;
+use Illuminate\Database\Eloquent\Model;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(FakeStoreService::class)
             ->needs('$uri')
             ->give(config('services.fake_store.uri'));
+        Model::preventLazyLoading();
     }
 }

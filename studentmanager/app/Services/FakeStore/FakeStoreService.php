@@ -11,7 +11,10 @@ class FakeStoreService
     public function __construct(private readonly string $uri)
     {
     }
-
+    /**
+     * Summary of products
+     * @return \Illuminate\Support\Collection<ProductData>
+     */
     public function products(): Collection
     {
         $products = Http::get("{$this->uri}/api/products")->json();

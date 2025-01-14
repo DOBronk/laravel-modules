@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ControllerUser;
+use App\Http\Controllers\MentorsController;
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\StudentsController;
+use App\Http\Controllers\ParentsController;
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessagesController;
@@ -12,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -32,17 +36,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::middleware(CheckRole::class . ':ROLE_STUDENT,ROLE_MENTOR,ROLE_ADMIN,ROLE_PARENT')->group(function () {
-        Route::get('/students', [ControllerUser::class, 'list_students'])->name('students.list');
-        Route::get('/students/{id}', [ControllerUser::class, 'show_student'])->name('student.show');
-        Route::get('/classes/show', [ClassroomController::class, 'index_show'])->name('class.show');
-        Route::get('/classes/{id}', [ClassroomController::class, 'show'])->name('class');
+        Route::get('/students', [StudentsController::class, 'index'])->name('students.list');
+        Route::get('/students/{id}', [StudentsController::class, 'show'])->name('student.show');
+        Route::get('/classes/show', [ClassroomController::class, 'index_show'])->name('class.show'); // TODO: Aanpassen!!
+        Route::get('/classes/{id}', [ClassroomController::class, 'show'])->name('class');            // TODO: Aanpassen!!
         Route::get('/classes', [ClassroomController::class, 'index'])->name('classes.list');
-        Route::get('/mentors', [ControllerUser::class, 'list_mentors'])->name('mentors.list');
+        Route::get('/mentors', [MentorsController::class, 'index'])->name('mentors.list');
     });
 
     Route::middleware(CheckRole::class . ':ROLE_MENTOR,ROLE_ADMIN')->group(function () {
-        Route::get('/parents', [ControllerUser::class, 'list_parents'])->name('parents.list');
-        Route::post('/parents/show', [ControllerUser::class, 'show_parent'])->name('parent.show');
+        Route::get('/parents', [ParentsController::class, 'index'])->name('parents.list');
+        Route::post('/parents/show', [ParentsController::class, 'show'])->name('parent.show');
     });
 
     Route::middleware(CheckRole::class . ':ROLE_ADMIN')->group(function () {
@@ -61,7 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/message', [MessagesController::class, 'create'])->name('messages.test');
 
-    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
