@@ -15,6 +15,8 @@ use Modules\CodeAnalyzer\Emails\CaMail;
 use Modules\CodeAnalyzer\Services\OllamaService;
 use Modules\CodeAnalyzer\Services\GithubService;
 use Modules\CodeAnalyzer\Models\Jobs;
+use Illuminate\Support\Facades\Log;
+
 
 class OllamaPromptJob implements ShouldQueue
 {
@@ -32,25 +34,27 @@ class OllamaPromptJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $ollama = app(OllamaService::class);
-        $git = app(GithubService::class);
-        $items = $this->userjob->Items()->get();
+        try {
+            $ollama = app(OllamaService::class);
+            $git = app(GithubService::class);
+            $items = $this->userjob->Items()->get();
 
-        foreach ($items as $item) {
-            $code = $git->getBlob($this->userjob->owner, $this->userjob->repo, $item->blob_sha);
-            $response = $ollama->findIssues($code);
+            foreach ($items as $item) {
+                $code = $git->getBlob($this->userjob->owner, $this->userjob->repo, $item->blob_sha);
+                $response = $ollama->findIssues($code);
+                $item->status = 1;
+                $item->save();
+                Mail::to(new Address("dennis@bronk-ict.nl"))->send(new CaMail("SHA: {$item->blob_sha} {$response}"));
 
-            try {
-                $array = json_decode($response);
-            } catch (Exception $exception) {
-                Mail::to(new Address("error@bronk-ict.nl"))->send(new CaMail("SHA: {$item->blob_sha} {$response}"));
+                if (!$this->userjob->active) {
+                    break;
+                }
             }
-            $item->status = 1;
-            $item->save();
-            Mail::to(new Address("dennis@bronk-ict.nl"))->send(new CaMail("SHA: {$item->blob_sha} {$response}"));
-            if (!$this->userjob->active) {
-                break;
-            }
+        } catch (Exception $ex) {
+            Log::error($ex->getMessage(), ['Job']);
+            $this->userjob->active = 0;
+            $this->userjob->save();
+            $this->fail();
         }
 
         $this->userjob->active = 0;

@@ -1,0 +1,10 @@
+$rq = new RabbitMqService();
+$rq->createQueue("test", function ($msg) {
+    $this->cb($msg);
+});
+
+
+    public function cb($msg)
+    {
+        Log::info("Rabbit MQ Message : {$msg}");
+    }

@@ -18,53 +18,79 @@ use Modules\CodeAnalyzer\Services\RabbitMqService
 ;
 class CodeAnalyzerController extends Controller
 {
+    public function createStepOne(Request $request)
+    {
+        return view('codeanalyzer::createjob1');
+    }
+
+    public function postCreateStepOne(Request $request)
+    {
+        $data = $request->validate([
+            'owner' => 'required|string',
+            'repository' => 'required|string',
+        ]);
+
+        $repo = $data['repository'];
+        $owner = $data['owner'];
+
+        $git = app(GithubService::class);
+
+        // TODO: Proper error handling in both getPhpFilesFromTree and here
+        $items = $git->getPhpFilesFromTree($owner, $repo);
+
+        return view('codeanalyzer::createjob2', ['repository' => $repo, 'owner' => $owner, 'items' => $items]);
+    }
+
+    public function postCreateStepTwo(Request $request)
+    {
+        $data = $request->validate([
+            'owner' => 'required|string',
+            'repository' => 'required|string',
+            'selectedItems.*' => 'required',
+        ]);
+
+        $repo = $data['repository'];
+        $owner = $data['owner'];
+
+        //    dd($request->selectedItems);
+
+        $job = Jobs::create([
+            'user_id' => $request->user()->id,
+            'owner' => $owner,
+            'repo' => $repo,
+            'active' => 1
+        ]);
+
+        foreach ($request->selectedItems as $item) {
+            $values = explode("|", $item);
+            $job->Items()->create([
+                'path' => $values[1],
+                'blob_sha' => $values[0],
+                'status' => 0,
+                'results' => "0"
+            ]);
+        }
+
+        dispatch(new OllamaPromptJob($job));
+
+        return redirect()->route("codeanalyzer.index");
+        // return view('codeanalyzer::createjob2', ['repository' => $repo, 'owner' => $owner, 'items' => $items]);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        //    $rq = new RabbitMqService();
-        //    $rq->createQueue("test", function ($msg) {
-        //         $this->cb($msg);
-        //     });
-
         $jobs = Jobs::where('active', '=', 1, 'and', 'user_id', '=', $request->user()->id)->get();
 
         if ($jobs->count() > 0) {
             $job = $jobs->first();
             $items = $job->Items()->get();
-            return view('codeanalyzer::index3', ['items' => $items]);
+            return view('codeanalyzer::activejob', ['items' => $items]);
         }
-        //  Log::info("Issue: " . $git->createIssue("DOBronk", "laravel", "Test", "Testen van issue aanmaken"));
-        return view('codeanalyzer::index2');
-    }
 
-    private function abc(Request $request)
-    {
-        $git = app(GithubService::class);
-
-        $job = Jobs::create([
-            'user_id' => $request->user()->id,
-            'active' => 1
-        ]);
-
-        $owner = "DOBronk";
-        $repo = "laravel";
-
-        $kill = $git->getPhpFilesFromTree("DOBronk", "laravel", "1087afb04cfa349f6bbc397b0d14691176027315");
-        foreach ($kill as $item) {
-            $job->Items()->create([
-                'owner' => $owner,
-                'repo' => $repo,
-                'path' => $item['path'],
-                'blob_sha' => $item['sha'],
-                'status' => 0
-            ]);
-        }
-    }
-    public function cb($msg)
-    {
-        Log::info("Rabbit MQ Message : {$msg}");
+        return view('codeanalyzer::jobdetails');
     }
     /**
      * Show the form for creating a new resource.
@@ -90,7 +116,7 @@ class CodeAnalyzerController extends Controller
             'active' => 1
         ]);
 
-        $kill = $git->getPhpFilesFromTree("DOBronk", "laravel", "1087afb04cfa349f6bbc397b0d14691176027315");
+        $kill = $git->getPhpFilesFromTree("DOBronk", "laravel"); // "1087afb04cfa349f6bbc397b0d14691176027315");
 
         $i = 0;
         foreach ($kill as $item) {
