@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Log;
 use Modules\CodeAnalyzer\Models\Jobs;
 
 use Modules\CodeAnalyzer\Services\GithubService;
+
+//use App\Services\GitHubService;
+
 use Modules\CodeAnalyzer\Services\RabbitMqService
 ;
 class CodeAnalyzerController extends Controller
@@ -21,6 +24,26 @@ class CodeAnalyzerController extends Controller
     public function createStepOne(Request $request)
     {
         return view('codeanalyzer::createjob1');
+    }
+
+    public function createStepTwo(Request $request, GitHubService $git)
+    {
+        //    dd($request);
+        $data = $request->validate([
+            'owner' => 'required|string',
+            'repository' => 'required|string',
+        ]);
+
+        $repo = $data['repository'];
+        $owner = $data['owner'];
+        // TODO: Proper error handling in both getPhpFilesFromTree and here
+        $items = $git->getPhpFilesFromTree($owner, $repo);
+
+        return view('codeanalyzer::createjob2', [
+            'owner' => $request['owner'],
+            'repository' => $request['repository'],
+            'items' => $items,
+        ]);
     }
 
     public function postCreateStepOne(Request $request)
@@ -33,12 +56,11 @@ class CodeAnalyzerController extends Controller
         $repo = $data['repository'];
         $owner = $data['owner'];
 
-        $git = app(GithubService::class);
-
-        // TODO: Proper error handling in both getPhpFilesFromTree and here
-        $items = $git->getPhpFilesFromTree($owner, $repo);
-
-        return view('codeanalyzer::createjob2', ['repository' => $repo, 'owner' => $owner, 'items' => $items]);
+        return redirect()->route('codeanalyzer.create.step.two', [
+            'repository' => $repo,
+            'owner' => $owner
+        ]);
+        //  return view('codeanalyzer::createjob2', ['repository' => $repo, 'owner' => $owner, 'items' => $items]);
     }
 
     public function postCreateStepTwo(Request $request)
@@ -103,9 +125,9 @@ class CodeAnalyzerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, GitHubService $git)
     {
-        $git = app(GithubService::class);
+        // $git = app(GithubService::class);
         $owner = "DOBronk";
         $repo = "laravel";
 

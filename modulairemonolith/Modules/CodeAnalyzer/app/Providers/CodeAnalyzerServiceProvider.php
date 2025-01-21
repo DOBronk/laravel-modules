@@ -32,12 +32,16 @@ class CodeAnalyzerServiceProvider extends ServiceProvider
         $this->app->when(OllamaService::class)
             ->needs('$uri')
             ->give(config('codeanalyzer.api_uri'));
-        $this->app->when(ServicesGithubService::class)
-            ->needs('$uri')
-            ->give(config('codeanalyzer.gh_uri'));
-        $this->app->when(ServicesGithubService::class)
-            ->needs('$key')
-            ->give(config('codeanalyzer.gh_key'));
+        //  $this->app->when(ServicesGithubService::class)
+        //     ->needs('$uri')
+        //     ->give(config('codeanalyzer.gh_uri'));
+
+        $this->app->bind("Modules\CodeAnalyzer\Services\GithubService", function () {
+            return new ServicesGithubService(config('codeanalyzer.gh_uri'), config('codeanalyzer.gh_key'));
+        });
+        // $this->app->when(ServicesGithubService::class)
+        //     ->needs('$key')
+        //      ->give(config('codeanalyzer.gh_key'));
     }
 
     /**
