@@ -9,13 +9,6 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
-    module.exports = {
-        //...
-        plugins: [
-            require('daisyui'),
-        ],
-        themes: ["forest"]
-    },
 
     theme: {
         extend: {
