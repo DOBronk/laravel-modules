@@ -3,6 +3,7 @@
 namespace Modules\CodeAnalyzer\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
 use Modules\CodeAnalyzer\Services\OllamaService;
 
@@ -26,9 +27,8 @@ class CodeAnalyzerController extends Controller
         return view('codeanalyzer::createjob1');
     }
 
-    public function createStepTwo(Request $request, GitHubService $git)
+    public function createStepTwo(Request $request, GitHubService $git, OllamaService $lama)
     {
-        //    dd($request);
         $data = $request->validate([
             'owner' => 'required|string',
             'repository' => 'required|string',
@@ -39,10 +39,12 @@ class CodeAnalyzerController extends Controller
         // TODO: Proper error handling in both getPhpFilesFromTree and here
         $items = $git->getPhpFilesFromTree($owner, $repo);
 
+        // dd($this->buildTree($items));
+
         return view('codeanalyzer::createjob2', [
             'owner' => $request['owner'],
             'repository' => $request['repository'],
-            'items' => $items,
+            'items' => $this->buildTree($items),
         ]);
     }
 
@@ -60,7 +62,27 @@ class CodeAnalyzerController extends Controller
             'repository' => $repo,
             'owner' => $owner
         ]);
-        //  return view('codeanalyzer::createjob2', ['repository' => $repo, 'owner' => $owner, 'items' => $items]);
+    }
+
+    private function buildTree($files)
+    {
+        $tree = [];
+
+        foreach ($files as $file) {
+            $parts = explode('/', $file['path']);
+            $current = &$tree;
+
+            foreach ($parts as $part) {
+                if (!isset($current[$part])) {
+                    $current[$part] = [];
+                }
+                $current = &$current[$part];
+            }
+            $current['?'] = $file['sha'];
+            $current['*'] = $file['path'];
+        }
+
+        return $tree;
     }
 
     public function postCreateStepTwo(Request $request)
