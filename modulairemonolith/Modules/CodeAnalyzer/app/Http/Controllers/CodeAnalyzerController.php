@@ -107,7 +107,7 @@ class CodeAnalyzerController extends Controller
 
         foreach ($request->selectedItems as $item) {
             $values = explode("|", $item);
-            $job->Items()->create([
+            $job->items()->create([
                 'path' => $values[1],
                 'blob_sha' => $values[0],
                 'status' => 0,
@@ -126,15 +126,16 @@ class CodeAnalyzerController extends Controller
      */
     public function index(Request $request)
     {
-        $jobs = Jobs::where('active', '=', 1, 'and', 'user_id', '=', $request->user()->id)->get();
+        // $jobs = Jobs::where('active', '=', 1, 'and', 'user_id', '=', $request->user()->id)->get();
+        $jobs = Jobs::where('user_id', '=', $request->user()->id)->get();
 
-        if ($jobs->count() > 0) {
-            $job = $jobs->first();
-            $items = $job->Items()->get();
-            return view('codeanalyzer::activejob', ['items' => $items]);
-        }
+        /*    if ($jobs->count() > 0) {
+                $job = $jobs->first();
+                $items = $job->items()->get();
+                return view('codeanalyzer::activejob', ['items' => $items]);
+            } */
 
-        return view('codeanalyzer::jobdetails');
+        return view('codeanalyzer::jobdetails', ['items' => $jobs]);
     }
     /**
      * Show the form for creating a new resource.
@@ -164,7 +165,7 @@ class CodeAnalyzerController extends Controller
 
         $i = 0;
         foreach ($kill as $item) {
-            $job->Items()->create([
+            $job->items()->create([
                 'path' => $item['path'],
                 'blob_sha' => $item['sha'],
                 'status' => 0
