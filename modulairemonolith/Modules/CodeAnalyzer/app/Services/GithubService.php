@@ -10,7 +10,6 @@ class GithubService
     public function __construct(private readonly string $uri, private readonly string $key)
     {
     }
-
     /**
      * Recursively retrieve all files ending with .php from provided git tree
      * @param string $owner Repository owner
