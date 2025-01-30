@@ -16,7 +16,7 @@ class Jobs extends Model
     protected $fillable = ['user_id', 'owner', 'repo', 'active'];
     protected $table = 'codeanalyzer_jobs';
 
-    public function Items()
+    public function items()
     {
         return $this->hasMany(Jobitems::class, "job_id");
     }

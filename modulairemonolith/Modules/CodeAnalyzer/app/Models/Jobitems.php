@@ -13,7 +13,7 @@ class Jobitems extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['job_id', 'path', 'blob_sha', 'status'];
+    protected $fillable = ['job_id', 'path', 'blob_sha', 'status', 'results'];
     protected $table = 'codeanalyzer_job_items';
 
     // protected static function newFactory(): JobitemsFactory
