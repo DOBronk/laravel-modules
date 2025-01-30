@@ -149,10 +149,6 @@ class CodeAnalyzerController extends Controller
     {
         //
     }
-    private function activeJobs(int $userId): bool
-    {
-        return Jobs::where('user_id', '=', $userId)->where('active', '=', '1')->count() > 0;
-    }
     private function buildTree($files)
     {
         $tree = [];
