@@ -1,16 +1,12 @@
-@props(['tree','recursed'])
+@props(['tree', 'namecheckbox'])
 
-@isset($recursed)
-    <ul class="nested">
-@else
-    <ul id="treeView">
-@endisset
+<ul id="treeView">
 
 @foreach ($tree as $key => $subTree)
     @isset($subTree['?'])
-        <li><input type='checkbox' value="{{ $subTree['?'] }}|{{ $subTree['*'] }}" />{{ $key }}</li>
+        <li><input type='checkbox' value="{{ $subTree['?'] }}|{{ $subTree['*'] }}" name="{{ $namecheckbox }}" />{{ $key }}</li>
     @else
-        <li><span class="carret">{{ $key }}</span><x-codeanalyzer::rendertree :tree="$subTree" recursed="1" />
+        <li><details><summary>{{ $key }}</summary><x-codeanalyzer::rendertree :tree="$subTree" :namecheckbox="$namecheckbox" /></details>
     @endisset
 @endforeach
 
