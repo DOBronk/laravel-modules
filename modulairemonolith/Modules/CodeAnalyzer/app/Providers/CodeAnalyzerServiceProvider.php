@@ -4,10 +4,11 @@ namespace Modules\CodeAnalyzer\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\CodeAnalyzer\Services\GithubService as ServicesGithubService;
+use Modules\CodeAnalyzer\Services\GithubService;
+use Modules\CodeAnalyzer\Services\MessageBroker;
 use Modules\CodeAnalyzer\Services\OllamaService;
+use Modules\CodeAnalyzer\Services\RabbitMqBroker;
 use Nwidart\Modules\Traits\PathNamespace;
-use Moudles\CodeAnalyzer\Services\GitHubService;
 
 class CodeAnalyzerServiceProvider extends ServiceProvider
 {
@@ -29,19 +30,24 @@ class CodeAnalyzerServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
         $this->app->when(OllamaService::class)
             ->needs('$uri')
             ->give(config('codeanalyzer.api_uri'));
-        //  $this->app->when(ServicesGithubService::class)
-        //     ->needs('$uri')
-        //     ->give(config('codeanalyzer.gh_uri'));
 
         $this->app->bind("Modules\CodeAnalyzer\Services\GithubService", function () {
-            return new ServicesGithubService(config('codeanalyzer.gh_uri'), config('codeanalyzer.gh_key'));
+            return new GithubService(config('codeanalyzer.gh_uri'), config('codeanalyzer.gh_key'));
         });
-        // $this->app->when(ServicesGithubService::class)
-        //     ->needs('$key')
-        //      ->give(config('codeanalyzer.gh_key'));
+
+        $this->app->bind("Modules\CodeAnalyzer\Services\MessageBroker", function () {
+            return new RabbitMqBroker(
+                config('codeanalyzer.rabbitmq_host'),
+                config('codeanalyzer.rabbitmq_port'),
+                config('codeanalyzer.rabbitmq_username'),
+                config('codeanalyzer.rabbitmq_password'),
+                config('codeanalyzer.rabbitmq_queue')
+            );
+        });
     }
 
     /**
