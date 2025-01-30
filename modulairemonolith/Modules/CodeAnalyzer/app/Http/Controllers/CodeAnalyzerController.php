@@ -10,24 +10,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\CodeAnalyzer\Models\Jobs;
 use Modules\CodeAnalyzer\Services\GithubService;
-use Modules\CodeAnalyzer\Services\MessageBroker
+use Modules\CodeAnalyzer\Services\MessageBroker;
+use Illuminate\Support\Facades\Gate;
 ;
 class CodeAnalyzerController extends Controller
 {
     public function createStepOne(Request $request)
     {
-        if ($this->activeJobs($request->user()->id)) {
-            abort('403');
-        }
-
         return view('codeanalyzer::createjob1');
     }
     public function createStepTwo(Request $request, GitHubService $git)
     {
-        if ($this->activeJobs($request->user()->id)) {
-            abort('403');
-        }
-
         $data = $request->validate([
             'owner' => 'required|string',
             'repository' => 'required|string',
@@ -51,10 +44,6 @@ class CodeAnalyzerController extends Controller
 
     public function postCreateStepOne(Request $request)
     {
-        if ($this->activeJobs($request->user()->id)) {
-            abort('403');
-        }
-
         $data = $request->validate([
             'owner' => 'required|string',
             'repository' => 'required|string',
@@ -69,10 +58,6 @@ class CodeAnalyzerController extends Controller
     }
     public function postCreateStepTwo(Request $request)
     {
-        if ($this->activeJobs($request->user()->id)) {
-            abort('403');
-        }
-
         $data = $request->validate([
             'owner' => 'required|string',
             'repository' => 'required|string',

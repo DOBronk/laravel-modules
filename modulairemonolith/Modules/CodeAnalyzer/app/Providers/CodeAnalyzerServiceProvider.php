@@ -9,6 +9,8 @@ use Modules\CodeAnalyzer\Services\MessageBroker;
 use Modules\CodeAnalyzer\Services\OllamaService;
 use Modules\CodeAnalyzer\Services\RabbitMqBroker;
 use Nwidart\Modules\Traits\PathNamespace;
+use Modules\CodeAnalyzer\Policies\CreateJobPolicy;
+use Illuminate\Support\Facades\Gate;
 
 class CodeAnalyzerServiceProvider extends ServiceProvider
 {
@@ -30,7 +32,7 @@ class CodeAnalyzerServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
-
+        Gate::define('noActiveJobs', [CreateJobPolicy::class, 'noActiveJobs']);
         $this->app->when(OllamaService::class)
             ->needs('$uri')
             ->give(config('codeanalyzer.api_uri'));
