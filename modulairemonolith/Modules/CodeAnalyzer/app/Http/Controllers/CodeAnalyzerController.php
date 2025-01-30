@@ -16,10 +16,18 @@ class CodeAnalyzerController extends Controller
 {
     public function createStepOne(Request $request)
     {
+        if ($this->activeJobs($request->user()->id)) {
+            abort('403');
+        }
+
         return view('codeanalyzer::createjob1');
     }
     public function createStepTwo(Request $request, GitHubService $git)
     {
+        if ($this->activeJobs($request->user()->id)) {
+            abort('403');
+        }
+
         $data = $request->validate([
             'owner' => 'required|string',
             'repository' => 'required|string',
@@ -43,6 +51,10 @@ class CodeAnalyzerController extends Controller
 
     public function postCreateStepOne(Request $request)
     {
+        if ($this->activeJobs($request->user()->id)) {
+            abort('403');
+        }
+
         $data = $request->validate([
             'owner' => 'required|string',
             'repository' => 'required|string',
@@ -57,6 +69,10 @@ class CodeAnalyzerController extends Controller
     }
     public function postCreateStepTwo(Request $request)
     {
+        if ($this->activeJobs($request->user()->id)) {
+            abort('403');
+        }
+
         $data = $request->validate([
             'owner' => 'required|string',
             'repository' => 'required|string',
@@ -147,6 +163,10 @@ class CodeAnalyzerController extends Controller
     public function destroy($id)
     {
         //
+    }
+    private function activeJobs(int $userId): bool
+    {
+        return Jobs::where('user_id', '=', $userId)->where('active', '=', '1')->count() > 0;
     }
     private function buildTree($files)
     {
