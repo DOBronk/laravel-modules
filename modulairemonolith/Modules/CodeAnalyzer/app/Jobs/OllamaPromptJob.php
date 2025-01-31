@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Log;
 class OllamaPromptJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     /**
      * Create a new job instance.
      */
@@ -37,7 +38,7 @@ class OllamaPromptJob implements ShouldQueue
         try {
             $ollama = app(OllamaService::class);
             $git = app(GithubService::class);
-            $items = $this->userjob->Items()->get();
+            $items = $this->userjob->items()->get();
 
             foreach ($items as $item) {
                 $code = $git->getBlob($this->userjob->owner, $this->userjob->repo, $item->blob_sha);
