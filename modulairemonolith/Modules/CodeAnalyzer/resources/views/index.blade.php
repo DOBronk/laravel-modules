@@ -56,11 +56,11 @@
 <p>Nog geen jobs aangemaakt</p>
 @endif
 
-@if($items->contains('active', 1))
-<p>Er staat nog een job in de wacht, u kunt geen nieuwe jobs aanmaken</p>
+@can('noActiveJobs')
+    <p>Er zijn geen actieve jobs, u kunt een nieuwe job toevoegen</p>
+    <a href="{{ route('codeanalyzer.create.step.one') }}">Nieuwe job aanmaken</a>
 @else
-<p>Er zijn geen actieve jobs, u kunt een nieuwe job toevoegen</p>
-<a href="{{ route('codeanalyzer.create.step.one') }}">Nieuwe job aanmaken</a>
-@endif
+    <p>Er staat nog een job in de wacht, u kunt geen nieuwe jobs aanmaken</p>
+@endcan
 
 @endsection
