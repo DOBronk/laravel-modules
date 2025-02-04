@@ -43,6 +43,9 @@
                                 <td>
                                     {{ $item->active }}
                                 </td>
+                                <td>
+                                    <a href="">{{ _('Toon details') }}</a>
+                                </td>
                             </tr>
                         @endforeach
                     </table>

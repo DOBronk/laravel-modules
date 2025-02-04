@@ -18,7 +18,7 @@
                 {{ __('Repository') }}
             </th>
             <th>
-                {{ __('Tree') }}
+                {{ __('Branch') }}
             </th>
             <th>
                 {{ __('Aantal items') }}
@@ -39,7 +39,7 @@
                         {{ $item->repo }}
                     </td>
                     <td>
-                        {{ $item->tree }}
+                        {{ $item->branch }}
                     </td>
                     <td>
                         {{ count($item->items) }}
