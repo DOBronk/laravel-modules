@@ -5,14 +5,17 @@ namespace Modules\CodeAnalyzer\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\CodeAnalyzer\Services\OllamaService;
-use Modules\CodeAnalyzer\Jobs\OllamaPromptJob;
+use Modules\CodeAnalyzer\Jobs\SendBrokerQueueJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\CodeAnalyzer\Models\Jobs;
 use Modules\CodeAnalyzer\Services\GithubService;
 use Modules\CodeAnalyzer\Services\MessageBroker;
 use Illuminate\Support\Facades\Gate;
-;
+use Modules\CodeAnalyzer\DTO\JobDTO;
+use Modules\CodeAnalyzer\Utilities\TreeBuilder;
+
+
 class CodeAnalyzerController extends Controller
 {
     public function createStepOne(Request $request)
@@ -38,7 +41,7 @@ class CodeAnalyzerController extends Controller
             'owner' => $owner,
             'repository' => $repo,
             'branch' => $branch,
-            'items' => $this->buildTree($items),
+            'items' => TreeBuilder::buildTree($items),
         ]);
     }
 
@@ -51,8 +54,8 @@ class CodeAnalyzerController extends Controller
         ]);
 
         return redirect()->route('codeanalyzer.create.step.two', [
-            'repository' => $data['repository'],
             'owner' => $data['owner'],
+            'repository' => $data['repository'],
             'branch' => $data['branch']
         ]);
     }
@@ -85,7 +88,7 @@ class CodeAnalyzerController extends Controller
                 ]);
             }
 
-            dispatch(new OllamaPromptJob($job));
+            dispatch(new SendBrokerQueueJob($job));
         });
 
         return redirect()->route("codeanalyzer.index");
@@ -96,10 +99,7 @@ class CodeAnalyzerController extends Controller
      */
     public function index(Request $request, MessageBroker $broker)
     {
-        // TODO: Remove this line of code
-        $broker->addJob("testbericht");
-
-        $jobs = Jobs::where('user_id', '=', $request->user()->id)->get();
+        $jobs = Jobs::where('user_id', '=', $request->user()->id)->with('items')->get();
 
         return view('codeanalyzer::index', ['items' => $jobs]);
     }
@@ -149,24 +149,5 @@ class CodeAnalyzerController extends Controller
     {
         //
     }
-    private function buildTree($files)
-    {
-        $tree = [];
 
-        foreach ($files as $file) {
-            $parts = explode('/', $file['path']);
-            $current = &$tree;
-
-            foreach ($parts as $part) {
-                if (!isset($current[$part])) {
-                    $current[$part] = [];
-                }
-                $current = &$current[$part];
-            }
-            $current['?'] = $file['sha'];
-            $current['*'] = $file['path'];
-        }
-
-        return $tree;
-    }
 }
