@@ -24,8 +24,8 @@ Route::group([], function () {
             Route::get('codeanalyzer/create-2', [CodeAnalyzerController::class, 'createStepTwo'])->name('codeanalyzer.create.step.two');
             Route::post('codeanalyzer/create-2', [CodeAnalyzerController::class, 'postCreateStepTwo'])->name('codeanalyzer.create.step.two.post');
         });
+
+        Route::get('codeanalyzer/job/{id}', [CodeAnalyzerController::class, 'showDetails'])->name('codeanalyzer.job');
+        Route::resource('codeanalyzer', CodeAnalyzerController::class)->names('codeanalyzer');
     });
-
-    Route::resource('codeanalyzer', CodeAnalyzerController::class)->names('codeanalyzer')->middleware('auth');
-
 });

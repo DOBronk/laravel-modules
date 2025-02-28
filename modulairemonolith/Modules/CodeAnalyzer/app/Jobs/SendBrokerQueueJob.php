@@ -19,7 +19,7 @@ class SendBrokerQueueJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private readonly Jobs $job)
+    public function __construct(private readonly Jobs $userjob)
     {
         //
     }
@@ -29,9 +29,9 @@ class SendBrokerQueueJob implements ShouldQueue
      */
     public function handle(GithubService $git, MessageBroker $broker): void
     {
-        foreach ($this->job->items as $item) {
-            $code = $git->getBlob($this->job->owner, $this->job->repo, $item->blob_sha);
-            $task = new JobDTO($this->job->id, $this->job->user_id, $item->id, $code);
+        foreach ($this->userjob->items as $item) {
+            $code = $git->getBlob($this->userjob->owner, $this->userjob->repo, $item->blob_sha);
+            $task = new JobDTO($this->userjob->id, $this->userjob->user_id, $item->id, $code);
             $broker->addJob($task->toJson());
         }
     }
