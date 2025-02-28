@@ -110,9 +110,9 @@ class CodeAnalyzerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, MessageBroker $broker)
+    public function index()
     {
-        $jobs = Jobs::where('user_id', '=', $request->user()->id)->with('items')->get();
+        $jobs = Jobs::query()->currentUser()->with('items')->get();
 
         return view('codeanalyzer::index', ['items' => $jobs]);
     }
