@@ -14,7 +14,9 @@ use Modules\CodeAnalyzer\Services\MessageBroker;
 use Illuminate\Support\Facades\Gate;
 use Modules\CodeAnalyzer\DTO\JobDTO;
 use Modules\CodeAnalyzer\Utilities\TreeBuilder;
-
+use Modules\CodeAnalyzer\Exceptions\GithubExceptions\ValidationException;
+use Modules\CodeAnalyzer\Exceptions\GithubExceptions\ResourceNotFoundException;
+use Modules\CodeAnalyzer\Exceptions\GithubExceptions\ConflictException;
 
 class CodeAnalyzerController extends Controller
 {
@@ -34,8 +36,11 @@ class CodeAnalyzerController extends Controller
         $owner = $data['owner'];
         $branch = $data['branch'] ?? 'main';
 
-        // TODO: Proper error handling in both getPhpFilesFromTree and here
-        $items = $git->getPhpFilesFromTree($owner, $repo, $branch);
+        try {
+            $items = $git->getPhpFilesFromTree($owner, $repo, $branch);
+        } catch (ResourceNotFoundException | ConflictException | ValidationException | \Exception $e) {
+            return redirect()->back()->withError($e->getMessage());
+        }
 
         return view('codeanalyzer::createjob2', [
             'owner' => $owner,
@@ -94,6 +99,14 @@ class CodeAnalyzerController extends Controller
         return redirect()->route("codeanalyzer.index");
     }
 
+    public function showDetails($id)
+    {
+        $job = Jobs::find($id);
+        if (!isset($job)) {
+            abort(404);
+        }
+        return view('codeanalyzer::jobdetails', ['job' => $job]);
+    }
     /**
      * Display a listing of the resource.
      */

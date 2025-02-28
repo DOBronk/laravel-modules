@@ -5,6 +5,10 @@ namespace Modules\CodeAnalyzer\Services;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Modules\CodeAnalyzer\Exceptions\GithubExceptions\ConflictException;
+use Modules\CodeAnalyzer\Exceptions\GithubExceptions\ValidationException;
+use Modules\CodeAnalyzer\Exceptions\GithubExceptions\ResourceNotFoundException;
+
 class GithubService
 {
     public function __construct(private readonly string $uri, private readonly string $key)
@@ -22,11 +26,21 @@ class GithubService
     {
         $uri = "{$this->uri}/repos/{$owner}/{$repo}/git/trees/{$sha}";
         $http = $this->httpClient()->get($uri, ['recursive' => 1]);
-        $response = $http->json()['tree'];
-        if ($http->status() == 200) {
-            return array_filter($response, function ($item) {
-                return $item['type'] === "blob" && str_ends_with($item['path'], '.php');
-            });
+
+        switch ($http->status()) {
+            case 200:
+                $response = $http->json()['tree'];
+                return array_filter($response, function ($item) {
+                    return $item['type'] === "blob" && str_ends_with($item['path'], '.php');
+                });
+            case 404:
+                throw new ResourceNotFoundException('Resource not found!');
+            case 409:
+                throw new ConflictException('Conflict!');
+            case 422:
+                throw new ValidationException('Validation error!');
+            default:
+                throw new \Exception('Unkown status code');
         }
     }
     /**
